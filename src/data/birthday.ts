@@ -17,7 +17,7 @@ export const birthdayData: BirthdayData = {
     { id: 6, code: "06", title: "The Lover", subtitle: "13 things he cherishes" },
     { id: 7, code: "07", title: "Suggestions", subtitle: "Birthday Suggestion #1 🎮💜" },
     { id: 8, code: "08", title: "Suggestions", subtitle: "Suggestion 2: Vroom Vroom 🏎️💨" },
-    { id: 9, code: "09", title: "Kaszsoft", subtitle: "The empire you are building" },
+    { id: 9, code: "09", title: "Kaszsoft", subtitle: "Visionary Founder ✨" },
     { id: 10, code: "10", title: "The Intensity of Little Things", subtitle: "The final letter" },
   ],
 
