@@ -101,8 +101,14 @@ export interface BirthdayData {
     preface: string;
     instruction: string;
     buttonText: string;
-    blownWish: string;
-    blownSubtext: string;
+    note: {
+      headline: string;
+      subtitle: string[];
+      blessing: string;
+      motto: string;
+      futureLine: string;
+      salutation: string;
+    };
   };
   threeSmiles: {
     headline: string;

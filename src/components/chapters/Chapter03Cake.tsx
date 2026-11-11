@@ -210,24 +210,52 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="p-6 rounded-2xl glass-panel border border-[#E8C88A]/30 text-center flex flex-col items-center shadow-2xl"
+              className="p-6 sm:p-8 rounded-3xl glass-panel border border-[#E8C88A]/40 text-center flex flex-col items-center shadow-2xl max-w-lg w-full"
             >
-              <div className="w-8 h-8 rounded-full bg-[#E8C88A]/20 flex items-center justify-center mb-2">
+              <div className="w-9 h-9 rounded-full bg-[#E8C88A]/20 flex items-center justify-center mb-3">
                 <Sparkles className="w-4 h-4 text-[#E8C88A]" />
               </div>
-              <h3 className="text-lg sm:text-xl font-serif font-bold text-[#E8C88A] glow-gold">
-                &ldquo;{cake.blownWish}&rdquo;
+
+              {/* Headline */}
+              <h3 className="text-xl sm:text-2xl font-serif font-black tracking-tight text-[#F7F2EA] glow-gold">
+                {cake.note.headline}
               </h3>
-              <p className="text-xs sm:text-sm text-[#94A3B8] mt-2 font-light">
-                {cake.blownSubtext}
+
+              {/* Subtitle Lines */}
+              <div className="mt-2 text-xs sm:text-sm text-[#94A3B8] font-mono space-y-0.5">
+                {cake.note.subtitle.map((line, idx) => (
+                  <p key={idx}>{line}</p>
+                ))}
+              </div>
+
+              {/* Blessing */}
+              <p className="mt-4 text-sm sm:text-base text-[#F7F2EA] font-light leading-relaxed">
+                {cake.note.blessing}
+              </p>
+
+              {/* Motto */}
+              <div className="mt-3 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#E8C88A]/30">
+                <p className="text-xs sm:text-sm font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#E8C88A] via-[#F7F2EA] to-[#67E8F9] tracking-wide">
+                  {cake.note.motto}
+                </p>
+              </div>
+
+              {/* Future Line */}
+              <p className="mt-3 text-xs sm:text-sm text-[#67E8F9] font-mono">
+                {cake.note.futureLine}
+              </p>
+
+              {/* Salutation */}
+              <p className="mt-4 text-sm sm:text-base font-serif italic text-[#E8C88A]">
+                {cake.note.salutation}
               </p>
 
               <button
                 onClick={onContinue}
-                className="mt-5 px-6 py-2.5 rounded-full font-mono text-xs tracking-widest uppercase font-semibold text-[#F7F2EA] bg-[#8B5CF6] hover:bg-[#7C3AED] shadow-[0_0_20px_rgba(139,92,246,0.4)] active:scale-95 transition-all flex items-center gap-2"
+                className="mt-6 px-7 py-3 rounded-full font-mono text-xs tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#E8C88A] via-[#F7F2EA] to-[#E8C88A] shadow-[0_0_20px_rgba(232,200,138,0.4)] active:scale-95 transition-all flex items-center gap-2"
               >
                 <span>CONTINUE TO CHAPTER 04</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-[#080810]" />
               </button>
             </motion.div>
           )}

@@ -38,8 +38,17 @@ export const birthdayData: BirthdayData = {
     preface: "Before anything else...",
     instruction: "Make a wish in your heart.",
     buttonText: "BLOW THE CANDLE",
-    blownWish: "May every quiet prayer and bold ambition come true.",
-    blownSubtext: "The universe heard you. Now let's explore what makes you extraordinary.",
+    note: {
+      headline: "HAPPY BIRTHDAY, MURTAZA 🤍",
+      subtitle: [
+        "The mind behind Kaszsoft.",
+        "A dreamer. A thinker. A creator.",
+      ],
+      blessing: "May every dream you chase become a reality.",
+      motto: "Keep building. Keep growing. Keep shining.",
+      futureLine: "Your greatest chapters are yet to be written. ✨",
+      salutation: "Happy Birthday, Mr. Kaszsoft! 🎂",
+    },
   },
 
   threeSmiles: {
