@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, KeyRound } from "lucide-react";
+import Image from "next/image";
 import { soundManager } from "@/lib/sound";
 import { birthdayData } from "@/data/birthday";
 
@@ -30,6 +31,19 @@ export const Chapter01Invitation: React.FC<Chapter01InvitationProps> = ({ onUnlo
 
   return (
     <div className="relative min-h-[100dvh] w-full flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      {/* Background Custom User Image - Subtle & Atmospheric */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <Image
+          src="/images/background image-start.png"
+          alt="Atmospheric Background"
+          fill
+          priority
+          className="object-cover object-center opacity-30 scale-105"
+        />
+        {/* Soft vignette overlay so text remains readable */}
+        <div className="absolute inset-0 bg-radial from-[#080810]/30 via-[#080810]/70 to-[#080810]" />
+      </div>
+
       {/* Background Star Nebulae Glow */}
       <div className="absolute w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] bg-gradient-to-tr from-[#8B5CF6]/20 via-[#67E8F9]/15 to-[#E8C88A]/10 rounded-full blur-[100px] pointer-events-none animate-pulse-glow" />
 

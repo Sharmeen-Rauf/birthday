@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { triggerCelebrationBurst } from "@/lib/confetti";
 import { soundManager } from "@/lib/sound";
 import { birthdayData } from "@/data/birthday";
@@ -33,6 +34,19 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
 
   return (
     <div className="relative min-h-[100dvh] w-full flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      {/* Background Custom User Image - Subtle & Atmospheric */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <Image
+          src="/images/background image-start.png"
+          alt="Atmospheric Background"
+          fill
+          priority
+          className="object-cover object-center opacity-30 scale-105"
+        />
+        {/* Soft vignette overlay */}
+        <div className="absolute inset-0 bg-radial from-[#080810]/40 via-[#080810]/75 to-[#080810]" />
+      </div>
+
       {/* Background glow burst */}
       {exploded && (
         <motion.div
