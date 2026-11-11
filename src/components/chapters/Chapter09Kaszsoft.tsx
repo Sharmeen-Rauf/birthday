@@ -107,7 +107,7 @@ export const Chapter09Kaszsoft: React.FC<Chapter09KaszsoftProps> = ({
           onClick={onContinue}
           className="px-8 py-3.5 rounded-full font-mono text-xs sm:text-sm tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#67E8F9] via-[#F7F2EA] to-[#E8C88A] shadow-[0_0_25px_rgba(103,232,249,0.35)] hover:shadow-[0_0_40px_rgba(103,232,249,0.6)] active:scale-95 transition-all flex items-center gap-3"
         >
-          <span>READ YOUR FINAL LETTER</span>
+          <span>NEXT // BIRTHDAY BOYYY 🎉</span>
           <ArrowRight className="w-4 h-4 text-[#080810]" />
         </button>
       </div>

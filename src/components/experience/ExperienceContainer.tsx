@@ -21,6 +21,7 @@ import { Chapter06Film } from "../chapters/Chapter06Film";
 import { Chapter07GamingSetup } from "../chapters/Chapter07GamingSetup";
 import { Chapter08NextDrive } from "../chapters/Chapter08NextDrive";
 import { Chapter09Kaszsoft } from "../chapters/Chapter09Kaszsoft";
+import { Chapter10FunnyVideo } from "../chapters/Chapter10FunnyVideo";
 import { Chapter10FinalLetter } from "../chapters/Chapter10FinalLetter";
 
 export const ExperienceContainer: React.FC = () => {
@@ -142,6 +143,9 @@ export const ExperienceContainer: React.FC = () => {
               />
             )}
             {currentChapter === 10 && (
+              <Chapter10FunnyVideo onContinue={() => goToChapter(11)} />
+            )}
+            {currentChapter === 11 && (
               <Chapter10FinalLetter onReplay={handleReplay} />
             )}
           </motion.div>

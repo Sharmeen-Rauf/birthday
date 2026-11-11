@@ -62,7 +62,7 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onRe
             </motion.div>
 
             <span className="text-xs font-mono tracking-widest text-[#E8C88A] uppercase mb-2">
-              CHAPTER 10 // THE CLIMAX
+              CHAPTER 11 // THE CLIMAX
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#F7F2EA] glow-gold">
