@@ -34,17 +34,17 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
 
   return (
     <div className="relative min-h-[100dvh] w-full flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-      {/* Background Custom User Image - Subtle & Atmospheric */}
+      {/* Background Custom User Image - Clearly Visible */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <Image
           src="/images/background image-start.png"
           alt="Atmospheric Background"
           fill
           priority
-          className="object-cover object-center opacity-30 scale-105"
+          className="object-cover object-center opacity-65 scale-105"
         />
-        {/* Soft vignette overlay */}
-        <div className="absolute inset-0 bg-radial from-[#080810]/40 via-[#080810]/75 to-[#080810]" />
+        {/* Soft edge vignette to frame the scene */}
+        <div className="absolute inset-0 bg-radial from-transparent via-[#080810]/30 to-[#080810]/85" />
       </div>
 
       {/* Background glow burst */}
@@ -53,7 +53,7 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-gradient-to-tr from-[#8B5CF6]/30 via-[#F3A6C8]/20 to-[#E8C88A]/25 rounded-full blur-[120px] pointer-events-none"
+          className="absolute w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-gradient-to-tr from-[#8B5CF6]/20 via-[#F3A6C8]/15 to-[#E8C88A]/20 rounded-full blur-[120px] pointer-events-none"
         />
       )}
 
@@ -64,7 +64,7 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-[#E8C88A]/30 text-xs font-mono tracking-widest text-[#E8C88A] uppercase mb-4"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[#E8C88A]/40 text-xs font-mono tracking-widest text-[#E8C88A] uppercase mb-4 shadow-lg"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#E8C88A]" />
             <span>SPECIAL BROADCAST</span>
@@ -75,7 +75,7 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-[#F7F2EA] uppercase"
+            className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-[#F7F2EA] uppercase drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]"
           >
             {celebration.primaryText}
           </motion.h2>
@@ -85,7 +85,7 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-3 text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#E8C88A] via-[#F3A6C8] to-[#67E8F9] glow-gold tracking-tight"
+            className="mt-3 text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#E8C88A] via-[#F3A6C8] to-[#67E8F9] glow-gold tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)]"
           >
             {celebration.secondaryText}
           </motion.h1>
@@ -95,7 +95,7 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6, duration: 0.9 }}
-            className="mt-6 text-base sm:text-xl text-[#94A3B8] font-light max-w-lg leading-relaxed"
+            className="mt-6 text-base sm:text-xl text-[#F7F2EA] font-light max-w-lg leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
           >
             &ldquo;{celebration.supportingText}&rdquo;
           </motion.p>
