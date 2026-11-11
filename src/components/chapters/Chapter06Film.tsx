@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Play, Pause, RotateCcw, Maximize, Sparkles, ArrowRight, Film } from "lucide-react";
+import { Play, Pause, RotateCcw, Maximize, Sparkles, ArrowRight, Film, Heart } from "lucide-react";
 import { ImageWithFallback } from "../common/ImageWithFallback";
 import { soundManager } from "@/lib/sound";
 import { birthdayData } from "@/data/birthday";
@@ -34,7 +34,6 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
           setHasEnded(false);
         })
         .catch(() => {
-          // If video file is not yet dropped in, show fallback interactive cinema sequence
           setHasVideoError(true);
           setIsPlaying(true);
         });
@@ -63,49 +62,47 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full flex flex-col items-center justify-between py-16 px-4 sm:px-6 overflow-hidden">
+    <div className="relative min-h-[100dvh] w-full flex flex-col items-center justify-between py-12 px-4 sm:px-6 overflow-hidden">
       {/* Background ambient cinema glow */}
       <div className="absolute w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] bg-gradient-to-tr from-[#8B5CF6]/20 via-[#67E8F9]/15 to-transparent rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Header */}
-      <div className="relative z-10 text-center max-w-xl">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono tracking-widest text-[#E8C88A] uppercase mb-2">
+      {/* Header - Phrasing Above Video */}
+      <div className="relative z-10 text-center max-w-xl mx-auto mb-2">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-[#E8C88A]/30 text-xs font-mono tracking-widest text-[#E8C88A] uppercase mb-2 shadow-sm">
           <Film className="w-3.5 h-3.5 text-[#E8C88A]" />
-          <span>CHAPTER 06 // CINEMATIC CHRONICLE</span>
+          <span>CHAPTER 05 // CINEMATIC CHRONICLE</span>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#F7F2EA] tracking-tight">
-          {cinematicFilm.headline}
+        <h2 className="text-2xl sm:text-4xl font-serif font-black text-[#F7F2EA] tracking-tight glow-gold">
+          Handsome Hunk • Spontaneous • Intelligent
         </h2>
-        <p className="text-base sm:text-xl font-serif italic text-[#67E8F9] mt-1 glow-cyan">
-          {cinematicFilm.subheadline}
-        </p>
       </div>
 
-      {/* Responsive 9:16 Mobile-Optimized Video Theatre Container */}
+      {/* Responsive Video Theatre Container (Mobile-First 9:16 / Universal) */}
       <div
         ref={containerRef}
-        className="relative z-10 my-6 w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-3xl overflow-hidden glass-panel border border-[#8B5CF6]/40 shadow-[0_0_50px_rgba(139,92,246,0.25)] flex flex-col justify-between p-3 group"
+        className="relative z-10 my-3 w-full max-w-[320px] sm:max-w-[360px] aspect-[9/16] max-h-[68vh] rounded-3xl overflow-hidden glass-panel border border-[#8B5CF6]/40 shadow-[0_0_50px_rgba(139,92,246,0.3)] flex flex-col justify-between p-3 group"
       >
-        {/* Actual Video or Fallback Poster */}
+        {/* Actual Video */}
         {!hasVideoError ? (
           <video
             ref={videoRef}
-            src={cinematicFilm.videoPath}
-            poster={cinematicFilm.fallbackPosterPath}
+            src="/videos/complete-video-googleflow.mp4"
+            poster="/videos/birthday-film-poster.jpg"
             playsInline
-            controls={false}
+            controls={isPlaying}
+            onClick={handleTogglePlay}
             onEnded={() => {
               setIsPlaying(false);
               setHasEnded(true);
             }}
             onError={() => setHasVideoError(true)}
-            className="absolute inset-0 w-full h-full object-cover rounded-3xl"
+            className="absolute inset-0 w-full h-full object-cover rounded-3xl cursor-pointer"
           />
         ) : (
-          /* High-aesthetic Cinematic Simulator if MP4 not yet placed */
+          /* Fallback Poster */
           <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden flex flex-col items-center justify-center p-6 text-center">
             <ImageWithFallback
-              src={cinematicFilm.fallbackPosterPath}
+              src="/videos/birthday-film-poster.jpg"
               alt="Film Poster"
               fill
               priority
@@ -116,23 +113,23 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
             <div className="relative z-10 p-5 rounded-2xl glass-panel border border-[#E8C88A]/30">
               <Sparkles className="w-8 h-8 text-[#E8C88A] mx-auto mb-2 animate-pulse" />
               <h4 className="text-lg font-serif font-bold text-[#F7F2EA]">
-                Cinematic Premiere
+                Google Flow Premiere
               </h4>
               <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
-                Ready for your Google Flow film! Drop <code className="text-[#67E8F9]">birthday-film.mp4</code> into <code className="text-[#67E8F9]">public/videos/</code> to stream the final cut.
+                Playing <code className="text-[#67E8F9]">complete-video-googleflow.mp4</code>
               </p>
             </div>
           </div>
         )}
 
         {/* Top Controls Overlay */}
-        <div className="relative z-20 flex items-center justify-between p-2">
+        <div className="relative z-20 flex items-center justify-between p-1 pointer-events-none">
           <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-white uppercase">
-            9:16 PREVIEW // 4K FLOW
+            GOOGLE FLOW // 4K REEL
           </span>
           <button
             onClick={handleFullscreen}
-            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-[#67E8F9] transition-colors"
+            className="pointer-events-auto w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-[#67E8F9] transition-colors"
             aria-label="Toggle Fullscreen"
           >
             <Maximize className="w-3.5 h-3.5" />
@@ -140,67 +137,64 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
         </div>
 
         {/* Center Play Button Overlay */}
-        <div className="relative z-20 flex items-center justify-center">
+        <div className="relative z-20 flex items-center justify-center pointer-events-none">
           {!isPlaying && (
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.92 }}
               onClick={handleTogglePlay}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-[#8B5CF6] via-[#67E8F9] to-[#E8C88A] p-[2px] shadow-[0_0_40px_rgba(103,232,249,0.5)] flex items-center justify-center"
+              className="pointer-events-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-[#8B5CF6] via-[#67E8F9] to-[#E8C88A] p-[2px] shadow-[0_0_40px_rgba(103,232,249,0.5)] flex items-center justify-center"
               aria-label="Play birthday film"
             >
-              <div className="w-full h-full rounded-full bg-[#080810]/80 backdrop-blur-sm flex items-center justify-center">
+              <div className="w-full h-full rounded-full bg-[#080810]/85 backdrop-blur-sm flex items-center justify-center">
                 <Play className="w-7 h-7 sm:w-8 sm:h-8 text-[#F7F2EA] fill-[#F7F2EA] ml-1" />
               </div>
             </motion.button>
           )}
         </div>
 
-        {/* Bottom Playback Bar */}
-        <div className="relative z-20 p-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between">
-          <button
-            onClick={handleTogglePlay}
-            className="flex items-center gap-2 text-xs font-mono text-[#F7F2EA] hover:text-[#E8C88A] transition-colors"
-          >
-            {isPlaying ? (
-              <>
-                <Pause className="w-4 h-4 text-[#67E8F9]" />
-                <span>PAUSE</span>
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 text-[#E8C88A]" />
-                <span>PLAY</span>
-              </>
-            )}
-          </button>
-
-          {(isPlaying || hasEnded) && (
+        {/* Bottom Playback Bar (Visible when paused or ended) */}
+        {!isPlaying && (
+          <div className="relative z-20 p-2.5 rounded-2xl bg-black/70 backdrop-blur-md border border-white/10 flex items-center justify-between">
             <button
-              onClick={handleReplay}
-              className="flex items-center gap-1.5 text-xs font-mono text-[#94A3B8] hover:text-white transition-colors"
+              onClick={handleTogglePlay}
+              className="flex items-center gap-2 text-xs font-mono text-[#F7F2EA] hover:text-[#E8C88A] transition-colors"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>REPLAY</span>
+              <Play className="w-4 h-4 text-[#E8C88A]" />
+              <span>TAP TO PLAY WITH SOUND</span>
             </button>
-          )}
-        </div>
+
+            {hasEnded && (
+              <button
+                onClick={handleReplay}
+                className="flex items-center gap-1.5 text-xs font-mono text-[#94A3B8] hover:text-white transition-colors"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>REPLAY</span>
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Discovery Next Prompt */}
-      <div className="relative z-10 text-center flex flex-col items-center">
-        <p className="text-xs font-mono tracking-widest text-[#94A3B8] uppercase mb-3">
-          There&apos;s still one more thing...
+      {/* Phrasing Below Video & Continue Button */}
+      <div className="relative z-10 text-center flex flex-col items-center max-w-md mx-auto mt-2">
+        <p className="text-base sm:text-xl font-serif italic text-[#E8C88A] glow-gold flex items-center justify-center gap-1.5">
+          <span>&ldquo;...with a genuinely beautiful heart.&rdquo;</span>
+          <Heart className="w-4 h-4 fill-[#E8C88A] text-[#E8C88A] inline-block" />
         </p>
+        <p className="text-xs text-[#94A3B8] font-light mt-1">
+          A sharp mind, a playful spirit, and a soul that inspires everyone around him.
+        </p>
+
         <button
           onClick={onContinue}
-          className="px-8 py-3.5 rounded-full font-mono text-xs sm:text-sm tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#8B5CF6] via-[#F7F2EA] to-[#67E8F9] shadow-[0_0_25px_rgba(139,92,246,0.35)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] active:scale-95 transition-all flex items-center gap-3"
+          className="mt-4 px-8 py-3.5 rounded-full font-mono text-xs sm:text-sm tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#67E8F9] via-[#F7F2EA] to-[#E8C88A] shadow-[0_0_25px_rgba(103,232,249,0.35)] hover:shadow-[0_0_40px_rgba(103,232,249,0.6)] active:scale-95 transition-all flex items-center gap-3"
         >
-          <span>{cinematicFilm.buttonText}</span>
+          <span>EXPLORE YOUR UNIVERSE</span>
           <ArrowRight className="w-4 h-4 text-[#080810]" />
         </button>
       </div>
     </div>
   );
 };
-

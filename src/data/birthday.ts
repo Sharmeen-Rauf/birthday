@@ -13,8 +13,8 @@ export const birthdayData: BirthdayData = {
     { id: 2, code: "02", title: "The Celebration Explosion", subtitle: "It's your day" },
     { id: 3, code: "03", title: "The Midnight Cake", subtitle: "Make a wish" },
     { id: 4, code: "04", title: "The Three Smiles", subtitle: "Moments of honesty" },
-    { id: 5, code: "05", title: "His Little Universe", subtitle: "14 extraordinary things" },
-    { id: 6, code: "06", title: "The Cinematic Film", subtitle: "Every universe has a story" },
+    { id: 5, code: "05", title: "The Cinematic Film", subtitle: "A story in motion" },
+    { id: 6, code: "06", title: "His Little Universe", subtitle: "14 extraordinary things" },
     { id: 7, code: "07", title: "The Dream Setup", subtitle: "Where ambition comes alive" },
     { id: 8, code: "08", title: "The Next Drive", subtitle: "Haval H6 1.5T" },
     { id: 9, code: "09", title: "Kaszsoft", subtitle: "The empire you are building" },
@@ -247,12 +247,12 @@ export const birthdayData: BirthdayData = {
   },
 
   cinematicFilm: {
-    headline: "Every universe has a story.",
-    subheadline: "And this one is yours.",
-    videoPath: "/videos/birthday-film.mp4",
+    headline: "Handsome Hunk • Spontaneous • Intelligent",
+    subheadline: "...with a genuinely beautiful heart. 🤍✨",
+    videoPath: "/videos/complete-video-googleflow.mp4",
     fallbackPosterPath: "/videos/birthday-film-poster.jpg",
-    teaserText: "A personalized motion piece crafted with memories, laughter, and appreciation.",
-    buttonText: "DISCOVER WHAT'S NEXT",
+    teaserText: "A personalized motion story crafted with laughter, ambition, and admiration.",
+    buttonText: "EXPLORE YOUR UNIVERSE",
   },
 
   gamingSetup: {

@@ -251,7 +251,7 @@ export const Chapter04ThreeSmiles: React.FC<Chapter04ThreeSmilesProps> = ({ onCo
                   onClick={onContinue}
                   className="px-5 py-2.5 rounded-full font-mono text-xs tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#67E8F9] via-[#F7F2EA] to-[#E8C88A] shadow-[0_0_20px_rgba(103,232,249,0.4)] active:scale-95 transition-all flex items-center gap-2"
                 >
-                  <span>CONTINUE TO CHAPTER 05</span>
+                  <span>WATCH YOUR FILM</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#080810]" />
                 </button>
               </div>

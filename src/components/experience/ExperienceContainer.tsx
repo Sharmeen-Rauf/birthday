@@ -118,13 +118,13 @@ export const ExperienceContainer: React.FC = () => {
               <Chapter04ThreeSmiles onContinue={() => goToChapter(5)} />
             )}
             {currentChapter === 5 && (
-              <Chapter05Universe
-                onContinue={() => goToChapter(6)}
-                onTriggerEasterEgg={(egg) => setActiveEasterEgg(egg)}
-              />
+              <Chapter06Film onContinue={() => goToChapter(6)} />
             )}
             {currentChapter === 6 && (
-              <Chapter06Film onContinue={() => goToChapter(7)} />
+              <Chapter05Universe
+                onContinue={() => goToChapter(7)}
+                onTriggerEasterEgg={(egg) => setActiveEasterEgg(egg)}
+              />
             )}
             {currentChapter === 7 && (
               <Chapter07GamingSetup
