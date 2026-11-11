@@ -78,6 +78,21 @@ export interface FinalLetterData {
   signature: string;
 }
 
+export interface ThreeSmilesData {
+  headline: string;
+  openingLine: string;
+  sections: {
+    id: string;
+    tag: string;
+    title: string;
+    paragraphs: string[];
+    accent: string;
+  }[];
+  closingWish: string;
+  closingNote: string;
+  signature: string;
+}
+
 export interface BirthdayData {
   recipient: {
     firstName: string;
@@ -110,10 +125,7 @@ export interface BirthdayData {
       salutation: string;
     };
   };
-  threeSmiles: {
-    headline: string;
-    cards: SmileCard[];
-  };
+  threeSmiles: ThreeSmilesData;
   universe: {
     headline: string;
     subheadline: string;

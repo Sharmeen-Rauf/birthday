@@ -52,37 +52,36 @@ export const birthdayData: BirthdayData = {
   },
 
   threeSmiles: {
-    headline: "Some smiles deserve their own chapter.",
-    cards: [
+    headline: "The Three Smiles",
+    openingLine: "Happy Birthday to the one who holds the most beautiful smiles! 🤍✨",
+    sections: [
       {
-        id: "smile-1",
-        tag: "01 / 03",
-        title: "THE PLAYFUL ONE",
-        subtitle: "Spontaneous & Effortless",
-        description: "The smile that shows up even when you're just pretending to laugh. Infectious, lighthearted, and always ready to break the tension.",
-        imagePath: "/images/murtaza/playful.jpg",
-        accent: "cyan",
+        id: "part-1",
+        tag: "PART 01",
+        title: "Your Three Smiles",
+        paragraphs: [
+          "You know, I've noticed you have three different kinds of smiles.",
+          "The one where you show your teeth, even when you're just pretending to laugh.",
+          "The little smirk that appears when something mischievous, flirty, or ridiculously dark crosses your mind. 😂",
+          "And then there's my favourite one — the rare, genuine smile that comes straight from your heart. The one where you don't just smile with your lips, but your eyes smile too. And trust me, that's the most beautiful one of all. 🥹🤍",
+        ],
+        accent: "#E8C88A",
       },
       {
-        id: "smile-2",
-        tag: "02 / 03",
-        title: "THE MISCHIEVOUS ONE",
-        subtitle: "Witty & Unpredictable",
-        description: "That tiny smirk when your mind comes up with something clever, flirty, or ridiculously dark. The one that says you already know the punchline.",
-        imagePath: "/images/murtaza/mischievous.jpg",
-        accent: "violet",
-      },
-      {
-        id: "smile-3",
-        tag: "03 / 03",
-        title: "THE REAL ONE",
-        subtitle: "From The Very Core",
-        description: "The one that comes straight from your heart. When it's not just your lips, but your eyes that smile too. Rare, unguarded, and deeply beautiful.",
-        imagePath: "/images/murtaza/real.jpg",
-        accent: "gold",
-        climaxMessage: "May life always give you a thousand reasons to wear that third smile.",
+        id: "part-2",
+        tag: "PART 02",
+        title: "Mind & Beautiful Heart",
+        paragraphs: [
+          "And it's not just your smiles. There's something fascinating about the way your mind works. You're effortlessly intelligent, ridiculously spontaneous, and somehow always have an answer ready for everything. Sometimes I genuinely wonder how your brain comes up with things so quickly! 😂",
+          "But behind all that wit, mischief, and cleverness, there's a genuinely beautiful heart. A softer side of you that perhaps not everyone gets to see.",
+          "I hope you never lose that perfect combination of a sharp mind, a playful personality, and a soft heart. Because that's what makes you, you.",
+        ],
+        accent: "#67E8F9",
       },
     ],
+    closingWish: "On your birthday, I wish you countless reasons to wear that third smile. The real one. The happiest one.",
+    closingNote: "May life always give you reasons to smile with your eyes, not just your lips.",
+    signature: "Happy Birthday, Murtaza! ✨❤️",
   },
 
   universe: {
