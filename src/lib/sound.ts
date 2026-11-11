@@ -232,6 +232,107 @@ class SoundManager {
   }
 
   /**
+   * Sound effect: Gentle emotional ending piano melody (Tender romantic arpeggio)
+   */
+  public playEndingPianoMusic() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.audioCtx) return;
+
+    try {
+      const ctx = this.audioCtx;
+      const now = ctx.currentTime;
+
+      // Soft emotional piano notes progression (D-major / B-minor tender emotional mood)
+      const pianoNotes = [
+        // Measure 1: D - F# - A - D5 arpeggio
+        { note: 293.66, time: 0.0, dur: 2.8, vol: 0.12 },  // D4
+        { note: 369.99, time: 0.25, dur: 2.5, vol: 0.10 }, // F#4
+        { note: 440.00, time: 0.5, dur: 2.8, vol: 0.11 },  // A4
+        { note: 587.33, time: 0.85, dur: 3.2, vol: 0.13 }, // D5
+        { note: 739.99, time: 1.6, dur: 2.6, vol: 0.12 },  // F#5
+        { note: 587.33, time: 2.2, dur: 2.4, vol: 0.10 },  // D5
+
+        // Measure 2: G - B - D5 - E5
+        { note: 196.00, time: 2.8, dur: 3.5, vol: 0.13 },  // G3 (deep bass)
+        { note: 392.00, time: 3.1, dur: 2.8, vol: 0.10 },  // G4
+        { note: 493.88, time: 3.4, dur: 2.8, vol: 0.11 },  // B4
+        { note: 587.33, time: 3.8, dur: 3.0, vol: 0.12 },  // D5
+        { note: 659.25, time: 4.5, dur: 2.8, vol: 0.11 },  // E5
+        { note: 587.33, time: 5.1, dur: 2.6, vol: 0.10 },  // D5
+
+        // Measure 3: Bm - D - F# - B5 (longing, tender climax)
+        { note: 246.94, time: 5.8, dur: 3.8, vol: 0.13 },  // B3 (deep bass)
+        { note: 369.99, time: 6.1, dur: 2.8, vol: 0.10 },  // F#4
+        { note: 440.00, time: 6.4, dur: 2.8, vol: 0.11 },  // A4
+        { note: 587.33, time: 6.8, dur: 3.2, vol: 0.12 },  // D5
+        { note: 739.99, time: 7.5, dur: 3.2, vol: 0.13 },  // F#5
+        { note: 880.00, time: 8.2, dur: 4.0, vol: 0.14 },  // A5 (high sweet tear note)
+
+        // Measure 4: A - C# - E - D resolution
+        { note: 220.00, time: 9.2, dur: 4.0, vol: 0.12 },  // A3
+        { note: 440.00, time: 9.5, dur: 3.0, vol: 0.10 },  // A4
+        { note: 554.37, time: 9.9, dur: 3.2, vol: 0.11 },  // C#5
+        { note: 587.33, time: 10.6, dur: 4.5, vol: 0.13 }, // D5 (peaceful resolution)
+        { note: 293.66, time: 11.4, dur: 5.5, vol: 0.12 }, // D4
+      ];
+
+      const playPianoKey = (freq: number, start: number, dur: number, vol: number) => {
+        // Fundamental sine
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(freq, now + start);
+
+        // Warm acoustic harmonic (triangle 2nd harmonic)
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = "triangle";
+        osc2.frequency.setValueAtTime(freq * 2, now + start);
+
+        // Subtle bell sparkle (3rd harmonic)
+        const osc3 = ctx.createOscillator();
+        const gain3 = ctx.createGain();
+        osc3.type = "sine";
+        osc3.frequency.setValueAtTime(freq * 3, now + start);
+
+        // Gentle acoustic piano envelope: immediate attack, natural reverberant decay
+        gain1.gain.setValueAtTime(0, now + start);
+        gain1.gain.linearRampToValueAtTime(vol, now + start + 0.02);
+        gain1.gain.exponentialRampToValueAtTime(vol * 0.45, now + start + 0.35);
+        gain1.gain.exponentialRampToValueAtTime(0.0001, now + start + dur);
+
+        gain2.gain.setValueAtTime(0, now + start);
+        gain2.gain.linearRampToValueAtTime(vol * 0.35, now + start + 0.02);
+        gain2.gain.exponentialRampToValueAtTime(0.0001, now + start + dur * 0.65);
+
+        gain3.gain.setValueAtTime(0, now + start);
+        gain3.gain.linearRampToValueAtTime(vol * 0.15, now + start + 0.015);
+        gain3.gain.exponentialRampToValueAtTime(0.0001, now + start + dur * 0.4);
+
+        osc1.connect(gain1);
+        osc2.connect(gain2);
+        osc3.connect(gain3);
+
+        gain1.connect(ctx.destination);
+        gain2.connect(ctx.destination);
+        gain3.connect(ctx.destination);
+
+        osc1.start(now + start);
+        osc1.stop(now + start + dur + 0.1);
+        osc2.start(now + start);
+        osc2.stop(now + start + dur + 0.1);
+        osc3.start(now + start);
+        osc3.stop(now + start + dur + 0.1);
+      };
+
+      pianoNotes.forEach((n) => {
+        playPianoKey(n.note, n.time, n.dur, n.vol);
+      });
+    } catch {}
+  }
+
+  /**
    * Sound effect: Easter Egg trigger
    */
   public playEasterEgg() {

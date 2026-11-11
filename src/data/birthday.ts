@@ -389,19 +389,16 @@ buildYourDreams(future);`,
 
   finalLetter: {
     preface: "One last thing...",
-    buttonLabel: "OPEN THE LETTER",
+    buttonLabel: "OPEN THE LETTER ✉️🤍",
     paragraphs: [
-      "I tried to put as much thought and feeling into this as I possibly could.",
-      "Because if there's one thing I've learned from you, it's that sometimes it's not just about the touch...",
-      "It's the intensity behind it that makes something meaningful.",
-      "So here's a little universe made of the things that make you, you.",
-      "May your heart always find peace, your mind always find inspiration, and your life always give you reasons to smile with your eyes.",
-      "Happy Birthday, Murtaza.",
+      "Maine apni poori intensity aur dil laga kar ye sab kiya hai, because aapse hi toh seekha hai ke it's not just the touch, it's the intensity that matters. 🤍",
+      "I hope mere little efforts dekh kar aapke face par woh genuine wali smile aayi ho. 🥹",
+      "Apke special day par ek chota sa thank you toh expect krsakhti, Mr. Kazmi! 🤍✨",
     ],
-    heroMessage: "HAPPY BIRTHDAY, MURTAZA",
+    heroMessage: "HAPPY BIRTHDAY, MR. KAZMI 🤍",
     recipientTitle: "THE MIND BEHIND KASZSOFT",
-    hopeMessage: "Your greatest chapters are yet to be written.",
-    signature: "Made with thought, effort, and a little too much attention to detail. 🤍",
+    hopeMessage: "May life always give you reasons to smile with your eyes, not just your lips. ✨",
+    signature: "With all my intensity, warmth & a little smile. 🤍",
   },
 
   audio: {

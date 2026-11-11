@@ -18,8 +18,12 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onRe
 
   const handleOpenLetter = () => {
     setIsOpen(true);
-    soundManager.playChime();
+    soundManager.playEndingPianoMusic();
     triggerWishSparkles();
+  };
+
+  const handlePlayPianoAgain = () => {
+    soundManager.playEndingPianoMusic();
   };
 
   const handleCopyLetter = () => {
@@ -91,13 +95,17 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onRe
             className="relative z-10 max-w-xl w-full my-8 p-6 sm:p-10 rounded-3xl glass-panel border border-[#E8C88A]/35 shadow-[0_0_60px_rgba(232,200,138,0.15)] flex flex-col overflow-hidden"
           >
             {/* Subtle top stamp */}
-            <div className="flex items-center justify-between pb-6 border-b border-white/10">
+            <div className="flex items-center justify-between pb-5 border-b border-white/10">
               <span className="text-[10px] font-mono tracking-widest text-[#E8C88A] uppercase">
-                A LETTER TO MURTAZA
+                A LETTER TO MR. KAZMI 🤍
               </span>
-              <span className="text-[10px] font-mono text-[#94A3B8]">
-                NOVEMBER 2026
-              </span>
+              <button
+                onClick={handlePlayPianoAgain}
+                className="flex items-center gap-1.5 text-[10px] font-mono text-[#67E8F9] hover:text-white transition-colors bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/10"
+                title="Play gentle piano melody again"
+              >
+                <span>🎹 PIANO MELODY</span>
+              </button>
             </div>
 
             {/* Letter Body - Line by Line */}
@@ -109,9 +117,11 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onRe
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + idx * 0.45, duration: 0.8 }}
                   className={`text-sm sm:text-base leading-relaxed ${
-                    idx === 2
-                      ? "text-[#E8C88A] font-serif italic text-base sm:text-lg glow-gold font-medium py-1"
-                      : "text-[#F7F2EA] font-light"
+                    idx === 0
+                      ? "text-[#F7F2EA] font-light"
+                      : idx === 1
+                      ? "text-[#E2E8F0] font-light"
+                      : "text-[#E8C88A] font-serif italic text-base sm:text-lg glow-gold font-medium pt-1"
                   }`}
                 >
                   {p}

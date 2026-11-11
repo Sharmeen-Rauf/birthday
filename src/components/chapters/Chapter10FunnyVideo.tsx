@@ -198,3 +198,4 @@ export const Chapter10FunnyVideo: React.FC<Chapter10FunnyVideoProps> = ({
     </div>
   );
 };
+
