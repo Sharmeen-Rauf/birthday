@@ -241,7 +241,7 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
           onClick={onContinue}
           className="px-8 py-3.5 rounded-full font-mono text-xs sm:text-sm tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#E8C88A] via-[#F7F2EA] to-[#67E8F9] shadow-[0_0_25px_rgba(232,200,138,0.35)] hover:shadow-[0_0_40px_rgba(232,200,138,0.6)] active:scale-95 transition-all flex items-center gap-3"
         >
-          <span>PROCEED TO CHAPTER 07 // GAMING</span>
+          <span>PROCEED TO SUGGESTIONS 🎮💜</span>
           <ArrowRight className="w-4 h-4 text-[#080810]" />
         </button>
       </div>
