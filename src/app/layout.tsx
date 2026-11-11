@@ -23,10 +23,31 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "MURTAZA.EXE — A Universe Made of Little Things",
-  description: "An extraordinary, luxury interactive birthday experience celebrating Murtaza.",
+  title: "MURTAZA.EXE 🤍 Happy Birthday",
+  description: "A little universe made of the things that make you, you. Happy Birthday, Mr. Kazmi! ✨",
+  applicationName: "MURTAZA.EXE",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  openGraph: {
+    title: "MURTAZA.EXE 🤍 Happy Birthday",
+    description: "A little universe made of the things that make you, you. Happy Birthday, Mr. Kazmi! ✨",
+    type: "website",
+    siteName: "MURTAZA.EXE",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MURTAZA.EXE 🤍 Happy Birthday",
+    description: "A little universe made of the things that make you, you. Happy Birthday, Mr. Kazmi! ✨",
   },
 };
 

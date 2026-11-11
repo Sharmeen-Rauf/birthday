@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140E24" />
+      <stop offset="100%" stop-color="#080810" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF7" />
+      <stop offset="40%" stop-color="#E8C88A" />
+      <stop offset="100%" stop-color="#C59A52" />
+    </linearGradient>
+    <linearGradient id="neonStar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67E8F9" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Rounded Squircle Dark Canvas -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="#E8C88A" stroke-width="1.8" stroke-opacity="0.45" />
+
+  <!-- Inner Violet Border -->
+  <rect x="4.5" y="4.5" width="51" height="51" rx="13.5" fill="none" stroke="#8B5CF6" stroke-width="1" stroke-opacity="0.25" />
+
+  <!-- Luxury Monogram "M" -->
+  <text x="31" y="44" font-family="-apple-system, BlinkMacSystemFont, 'Georgia', serif" font-size="35" font-weight="bold" fill="url(#goldGrad)" text-anchor="middle" filter="url(#softGlow)">M</text>
+
+  <!-- Glowing Sparkle Star at Top Right -->
+  <path d="M47 13 C47 17.5 48.5 19 53 19 C48.5 19 47 20.5 47 25 C47 20.5 45.5 19 41 19 C45.5 19 47 17.5 47 13 Z" fill="url(#neonStar)" />
+  
+  <!-- Tiny Sparkle Dot at Bottom Left -->
+  <circle cx="16" cy="46" r="1.8" fill="#E8C88A" opacity="0.8" />
+</svg>
