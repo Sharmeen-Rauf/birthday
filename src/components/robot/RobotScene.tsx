@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
@@ -12,6 +12,7 @@ interface RobotModelProps {
   smileMode: number; // 0: neutral, 1: social, 2: smirk, 3: genuine
   lookAtCamera: boolean;
   headTilt: number; // custom tilt angle
+  showFaceProjection?: boolean;
 }
 
 function RobotModel({
@@ -21,39 +22,52 @@ function RobotModel({
   smileMode,
   lookAtCamera,
   headTilt,
+  showFaceProjection = false,
 }: RobotModelProps) {
   const headGroupRef = useRef<THREE.Group>(null);
   const leftEyeRef = useRef<THREE.Mesh>(null);
   const rightEyeRef = useRef<THREE.Mesh>(null);
   const mouthGroupRef = useRef<THREE.Group>(null);
   const chestCoreRef = useRef<THREE.Mesh>(null);
+  const holoPlaneRef = useRef<THREE.Mesh>(null);
+  const scanLineRef = useRef<THREE.Mesh>(null);
 
   const [isBlinking, setIsBlinking] = useState(false);
 
-  // Random natural blink sequence
+  // Load Murtaza's reference portrait as a holographic visor projection texture
+  const murtazaTexture = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const loader = new THREE.TextureLoader();
+    const tex = loader.load("/images/background image-start.png");
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+  }, []);
+
+  // Natural blink sequence
   useEffect(() => {
     let blinkTimer: NodeJS.Timeout;
     const triggerBlink = () => {
       setIsBlinking(true);
       setTimeout(() => {
         setIsBlinking(false);
-        blinkTimer = setTimeout(triggerBlink, 2800 + Math.random() * 3200);
-      }, 130);
+        blinkTimer = setTimeout(triggerBlink, 3000 + Math.random() * 3000);
+      }, 120);
     };
-    blinkTimer = setTimeout(triggerBlink, 2500);
+    blinkTimer = setTimeout(triggerBlink, 2600);
     return () => clearTimeout(blinkTimer);
   }, []);
 
   useFrame((state, delta) => {
     const time = state.clock.getElapsedTime();
 
-    // Head subtle tracking & breathing motion
+    // Head tracking & natural micro-movements
     if (headGroupRef.current) {
       if (lookAtCamera) {
-        // Look directly into lens
+        // Leans in slightly and looks straight into the screen
         headGroupRef.current.rotation.x = THREE.MathUtils.lerp(
           headGroupRef.current.rotation.x,
-          0.05 + Math.sin(time * 2) * 0.02,
+          0.08 + Math.sin(time * 2.2) * 0.015,
           0.1
         );
         headGroupRef.current.rotation.y = THREE.MathUtils.lerp(
@@ -67,9 +81,9 @@ function RobotModel({
           0.1
         );
       } else {
-        // Track mouse cursor gently with soft breathing
-        const targetRotY = state.pointer.x * 0.45;
-        const targetRotX = -state.pointer.y * 0.3 + Math.sin(time * 1.5) * 0.03;
+        // Smoothly tracks cursor or touch with natural breathing rhythm
+        const targetRotY = state.pointer.x * 0.4;
+        const targetRotX = -state.pointer.y * 0.25 + Math.sin(time * 1.5) * 0.025;
         headGroupRef.current.rotation.y = THREE.MathUtils.lerp(
           headGroupRef.current.rotation.y,
           targetRotY,
@@ -82,18 +96,18 @@ function RobotModel({
         );
         headGroupRef.current.rotation.z = THREE.MathUtils.lerp(
           headGroupRef.current.rotation.z,
-          headTilt + (smileMode === 2 ? 0.06 : 0),
+          headTilt + (smileMode === 2 ? 0.05 : 0),
           0.08
         );
       }
     }
 
-    // Eye blinking and speech pulse
-    const eyeScaleY = isBlinking ? 0.08 : isSpeaking ? 1 + Math.sin(time * 25) * 0.15 : 1;
+    // Eye blinking and speech resonance
+    const eyeScaleY = isBlinking ? 0.08 : isSpeaking ? 1 + Math.sin(time * 24) * 0.12 : 1;
     if (leftEyeRef.current) leftEyeRef.current.scale.y = eyeScaleY;
     if (rightEyeRef.current) {
-      // If smirk (smileMode 2), right eye slightly winks/narrows
-      rightEyeRef.current.scale.y = smileMode === 2 ? eyeScaleY * 0.75 : eyeScaleY;
+      // Smirk (smileMode 2) narrows the right eye playfully
+      rightEyeRef.current.scale.y = smileMode === 2 ? eyeScaleY * 0.72 : eyeScaleY;
     }
 
     // Mouth audio spectrum animation
@@ -101,53 +115,74 @@ function RobotModel({
       mouthGroupRef.current.children.forEach((bar, idx) => {
         const mesh = bar as THREE.Mesh;
         if (isSpeaking) {
-          const wave = Math.abs(Math.sin(time * 20 + idx * 0.8)) * speechIntensity;
-          mesh.scale.y = THREE.MathUtils.lerp(mesh.scale.y, 0.4 + wave * 2.2, 0.3);
+          const wave = Math.abs(Math.sin(time * 22 + idx * 0.9)) * speechIntensity;
+          mesh.scale.y = THREE.MathUtils.lerp(mesh.scale.y, 0.35 + wave * 2.2, 0.3);
         } else if (smileMode === 3) {
-          // Genuine curved wide smile
-          const curve = Math.sin((idx / 6) * Math.PI) * 0.6;
-          mesh.scale.y = 0.5 + curve;
-          mesh.position.y = -0.32 + curve * 0.06;
+          // Mode 3: Genuine warm smile curvature
+          const curve = Math.sin((idx / 6) * Math.PI) * 0.65;
+          mesh.scale.y = 0.45 + curve;
+          mesh.position.y = -0.32 + curve * 0.07;
         } else if (smileMode === 2) {
-          // Sarcastic lopsided smirk
-          const smirk = (idx / 6) * 0.5;
+          // Mode 2: Mischievous lopsided smirk
+          const smirk = (idx / 6) * 0.55;
           mesh.scale.y = 0.3 + smirk;
-          mesh.position.y = -0.32 + smirk * 0.05;
+          mesh.position.y = -0.32 + smirk * 0.06;
         } else if (smileMode === 1) {
-          // Polite social smile
-          mesh.scale.y = 0.4;
+          // Mode 1: Social smile
+          mesh.scale.y = 0.38;
           mesh.position.y = -0.32;
         } else {
-          mesh.scale.y = 0.25;
+          mesh.scale.y = 0.22;
           mesh.position.y = -0.32;
         }
       });
     }
 
-    // Chest Kaszsoft reactor core pulse
+    // Holographic face projection & biometric scan line
+    if (holoPlaneRef.current) {
+      const targetOpacity =
+        (showFaceProjection || lookAtCamera || smileMode === 3) && isPoweringOn
+          ? 0.45 + Math.sin(time * 3) * 0.08
+          : isPoweringOn
+          ? 0.18
+          : 0;
+      const mat = holoPlaneRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, 0.1);
+    }
+
+    if (scanLineRef.current) {
+      // Moving laser scan line
+      scanLineRef.current.position.y = Math.sin(time * 2.5) * 0.3;
+    }
+
+    // Chest Kaszsoft arc core pulse
     if (chestCoreRef.current) {
-      const coreIntensity = isPoweringOn
-        ? 1.2 + Math.sin(time * 4) * 0.4
-        : 0.4;
-      chestCoreRef.current.scale.setScalar(
-        1 + (isSpeaking ? speechIntensity * 0.08 : 0)
-      );
+      const corePulse = isPoweringOn ? 1 + Math.sin(time * 3.5) * 0.1 : 0.8;
+      chestCoreRef.current.scale.setScalar(corePulse);
     }
   });
 
-  // Metallic Material Constants
-  const obsidianBody = (
+  // Metallic & Lighting Materials
+  const obsidianArmor = (
     <meshStandardMaterial
-      color="#0D0E15"
+      color="#0D0E16"
       metalness={0.92}
-      roughness={0.18}
+      roughness={0.2}
       envMapIntensity={1.2}
     />
   );
 
-  const gunmetalAccent = (
+  const sweptHairMaterial = (
     <meshStandardMaterial
-      color="#1A1B28"
+      color="#12101B"
+      metalness={0.78}
+      roughness={0.35}
+    />
+  );
+
+  const titaniumAccent = (
+    <meshStandardMaterial
+      color="#1C1D2A"
       metalness={0.88}
       roughness={0.25}
     />
@@ -155,9 +190,9 @@ function RobotModel({
 
   const purpleNeonGlow = (
     <meshStandardMaterial
-      color="#A855F7"
+      color="#C084FC"
       emissive="#9333EA"
-      emissiveIntensity={isPoweringOn ? (isSpeaking ? 3.5 : 2.6) : 0.2}
+      emissiveIntensity={isPoweringOn ? (isSpeaking ? 3.4 : 2.5) : 0.2}
       toneMapped={false}
     />
   );
@@ -178,28 +213,25 @@ function RobotModel({
         {/* Main Chest Armor Plate */}
         <mesh position={[0, 0.4, 0]}>
           <boxGeometry args={[1.35, 1.1, 0.75]} />
-          {obsidianBody}
+          {obsidianArmor}
         </mesh>
 
-        {/* Chamfered Collar Plate */}
+        {/* Sculpted Collar Plate */}
         <mesh position={[0, 0.98, 0.06]} rotation={[0.2, 0, 0]}>
           <boxGeometry args={[1.15, 0.35, 0.65]} />
-          {gunmetalAccent}
+          {titaniumAccent}
         </mesh>
 
         {/* Central Hexagonal Kaszsoft Arc Reactor */}
         <group position={[0, 0.52, 0.4]}>
-          {/* Reactor Outer Ring */}
           <mesh rotation={[0, 0, Math.PI / 6]}>
             <cylinderGeometry args={[0.24, 0.24, 0.08, 6]} />
-            {gunmetalAccent}
+            {titaniumAccent}
           </mesh>
-          {/* Reactor Glowing Core */}
           <mesh ref={chestCoreRef} position={[0, 0, 0.02]}>
             <cylinderGeometry args={[0.16, 0.16, 0.09, 16]} />
             {cyanAccentGlow}
           </mesh>
-          {/* Point light emitted by the reactor */}
           {isPoweringOn && (
             <pointLight
               color="#67E8F9"
@@ -209,17 +241,15 @@ function RobotModel({
           )}
         </group>
 
-        {/* Left & Right Shoulder Pods */}
+        {/* Left & Right Shoulder Pods with Violet Trim */}
         <mesh position={[-0.82, 0.85, 0]}>
           <sphereGeometry args={[0.28, 16, 16]} />
-          {obsidianBody}
+          {obsidianArmor}
         </mesh>
         <mesh position={[0.82, 0.85, 0]}>
           <sphereGeometry args={[0.28, 16, 16]} />
-          {obsidianBody}
+          {obsidianArmor}
         </mesh>
-
-        {/* Violet Shoulder Accent Strips */}
         <mesh position={[-0.82, 0.98, 0.08]}>
           <boxGeometry args={[0.25, 0.04, 0.3]} />
           {purpleNeonGlow}
@@ -230,74 +260,122 @@ function RobotModel({
         </mesh>
       </group>
 
-      {/* ================= NECK ARTICULATION ================= */}
+      {/* ================= NECK WITH NEON RING ================= */}
       <group position={[0, 1.1, 0]}>
         <mesh>
           <cylinderGeometry args={[0.22, 0.26, 0.28, 16]} />
-          {gunmetalAccent}
+          {titaniumAccent}
         </mesh>
-        {/* Glowing conduit ring around neck */}
         <mesh position={[0, 0, 0]}>
           <torusGeometry args={[0.24, 0.02, 8, 24]} />
           {purpleNeonGlow}
         </mesh>
       </group>
 
-      {/* ================= HEAD & FACE ================= */}
+      {/* ================= HEAD & FACE (INSPIRED BY MURTAZA) ================= */}
       <group ref={headGroupRef} position={[0, 1.48, 0.04]}>
-        {/* Cranial Helmet Shell */}
+        {/* Cranial Helmet Base */}
         <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[0.88, 0.95, 0.88]} />
-          {obsidianBody}
+          <boxGeometry args={[0.88, 0.92, 0.88]} />
+          {obsidianArmor}
         </mesh>
 
-        {/* Tapered Crown Top */}
-        <mesh position={[0, 0.48, -0.05]} rotation={[-0.08, 0, 0]}>
-          <boxGeometry args={[0.76, 0.18, 0.76]} />
-          {gunmetalAccent}
+        {/* SIGNATURE SWEPT-UP HAIRSTYLE (Contoured layered crests matching Murtaza's look) */}
+        <group position={[0, 0.42, 0]}>
+          {/* Main textured hair crown */}
+          <mesh position={[0, 0.06, 0]}>
+            <boxGeometry args={[0.84, 0.22, 0.84]} />
+            {sweptHairMaterial}
+          </mesh>
+
+          {/* Front upward/back swept quiff */}
+          <mesh position={[0.06, 0.16, 0.22]} rotation={[0.22, 0.08, -0.1]}>
+            <boxGeometry args={[0.68, 0.18, 0.45]} />
+            {sweptHairMaterial}
+          </mesh>
+
+          {/* Side volume sweep */}
+          <mesh position={[-0.18, 0.14, 0.1]} rotation={[0.16, -0.12, 0.18]}>
+            <boxGeometry args={[0.42, 0.16, 0.55]} />
+            {sweptHairMaterial}
+          </mesh>
+
+          {/* Back taper contour */}
+          <mesh position={[0, 0.04, -0.34]} rotation={[-0.25, 0, 0]}>
+            <boxGeometry args={[0.76, 0.16, 0.32]} />
+            {sweptHairMaterial}
+          </mesh>
+        </group>
+
+        {/* Sharp Jawline & Chin Contours (Murtaza's structured jaw) */}
+        <mesh position={[0, -0.42, 0.28]} rotation={[0.18, 0, 0]}>
+          <boxGeometry args={[0.52, 0.26, 0.34]} />
+          {titaniumAccent}
+        </mesh>
+        {/* Subtle goatee titanium chin plate */}
+        <mesh position={[0, -0.46, 0.45]}>
+          <boxGeometry args={[0.14, 0.08, 0.04]} />
+          {obsidianArmor}
         </mesh>
 
-        {/* Dark Visor / Faceplate (Inspired by Murtaza's sharp jaw & brow line) */}
-        <mesh position={[0, -0.02, 0.38]}>
-          <boxGeometry args={[0.78, 0.72, 0.22]} />
+        {/* TINTED GLASS VISOR / FACE DISPLAY */}
+        <mesh position={[0, -0.04, 0.42]}>
+          <boxGeometry args={[0.74, 0.68, 0.12]} />
           <meshStandardMaterial
             color="#08070F"
-            metalness={0.95}
-            roughness={0.08}
-            envMapIntensity={2.0}
+            metalness={0.96}
+            roughness={0.06}
+            envMapIntensity={2.5}
           />
         </mesh>
 
-        {/* Angular Jaw / Chin Plate */}
-        <mesh position={[0, -0.42, 0.32]} rotation={[0.2, 0, 0]}>
-          <boxGeometry args={[0.54, 0.26, 0.32]} />
-          {gunmetalAccent}
+        {/* HOLOGRAPHIC SCAN DISPLAY (Murtaza's actual face projection on visor) */}
+        {murtazaTexture && (
+          <mesh ref={holoPlaneRef} position={[0, -0.04, 0.49]}>
+            <planeGeometry args={[0.66, 0.64]} />
+            <meshStandardMaterial
+              map={murtazaTexture}
+              transparent
+              opacity={0.2}
+              color="#C084FC"
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
+            />
+          </mesh>
+        )}
+
+        {/* Animated Cybernetic Scan Line */}
+        <mesh ref={scanLineRef} position={[0, 0, 0.5]}>
+          <planeGeometry args={[0.66, 0.02]} />
+          <meshBasicMaterial
+            color="#67E8F9"
+            transparent
+            opacity={isPoweringOn ? 0.6 : 0}
+            blending={THREE.AdditiveBlending}
+          />
         </mesh>
 
-        {/* Dual Glowing Purple Eyes */}
-        <group position={[0, 0.08, 0.49]}>
-          {/* Left Eye */}
-          <mesh ref={leftEyeRef} position={[-0.2, 0, 0]}>
-            <boxGeometry args={[0.18, 0.07, 0.04]} />
+        {/* DUAL GLOWING PURPLE EYES */}
+        <group position={[0, 0.07, 0.51]}>
+          <mesh ref={leftEyeRef} position={[-0.19, 0, 0]}>
+            <boxGeometry args={[0.17, 0.065, 0.03]} />
             {purpleNeonGlow}
           </mesh>
-          {/* Right Eye */}
-          <mesh ref={rightEyeRef} position={[0.2, 0, 0]}>
-            <boxGeometry args={[0.18, 0.07, 0.04]} />
+          <mesh ref={rightEyeRef} position={[0.19, 0, 0]}>
+            <boxGeometry args={[0.17, 0.065, 0.03]} />
             {purpleNeonGlow}
           </mesh>
 
-          {/* Point lights from eyes when powered on */}
           {isPoweringOn && (
             <>
               <pointLight
-                position={[-0.2, 0, 0.2]}
+                position={[-0.19, 0, 0.18]}
                 color="#C084FC"
                 intensity={isSpeaking ? 3.0 : 1.8}
                 distance={2.2}
               />
               <pointLight
-                position={[0.2, 0, 0.2]}
+                position={[0.19, 0, 0.18]}
                 color="#C084FC"
                 intensity={isSpeaking ? 3.0 : 1.8}
                 distance={2.2}
@@ -306,11 +384,11 @@ function RobotModel({
           )}
         </group>
 
-        {/* Cyber Ear Pods with Neon Rings */}
+        {/* CYBER EAR PODS WITH NEON RINGS */}
         <group position={[-0.48, 0, 0]}>
           <mesh rotation={[0, 0, Math.PI / 2]}>
             <cylinderGeometry args={[0.16, 0.16, 0.1, 16]} />
-            {gunmetalAccent}
+            {titaniumAccent}
           </mesh>
           <mesh position={[-0.05, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
             <torusGeometry args={[0.12, 0.015, 8, 16]} />
@@ -320,7 +398,7 @@ function RobotModel({
         <group position={[0.48, 0, 0]}>
           <mesh rotation={[0, 0, Math.PI / 2]}>
             <cylinderGeometry args={[0.16, 0.16, 0.1, 16]} />
-            {gunmetalAccent}
+            {titaniumAccent}
           </mesh>
           <mesh position={[0.05, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
             <torusGeometry args={[0.12, 0.015, 8, 16]} />
@@ -328,11 +406,11 @@ function RobotModel({
           </mesh>
         </group>
 
-        {/* Animated Digital Mouth Audio Spectrum / Smile Waveform */}
-        <group ref={mouthGroupRef} position={[0, 0, 0.49]}>
+        {/* DIGITAL MOUTH AUDIO SPECTRUM & SMILE WAVEFORM */}
+        <group ref={mouthGroupRef} position={[0, 0, 0.51]}>
           {[-0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15].map((x, idx) => (
             <mesh key={idx} position={[x, -0.32, 0]}>
-              <boxGeometry args={[0.03, 0.1, 0.03]} />
+              <boxGeometry args={[0.03, 0.09, 0.02]} />
               {idx === 3 || idx === 2 || idx === 4 ? cyanAccentGlow : purpleNeonGlow}
             </mesh>
           ))}
@@ -349,6 +427,7 @@ export interface RobotSceneProps {
   smileMode: number;
   lookAtCamera: boolean;
   headTilt?: number;
+  showFaceProjection?: boolean;
 }
 
 export default function RobotScene({
@@ -358,6 +437,7 @@ export default function RobotScene({
   smileMode,
   lookAtCamera,
   headTilt = 0,
+  showFaceProjection = false,
 }: RobotSceneProps) {
   return (
     <div className="relative w-full h-full">
@@ -367,14 +447,14 @@ export default function RobotScene({
       >
         <PerspectiveCamera makeDefault position={[0, 0.6, 3.4]} fov={42} />
 
-        {/* Ambient Dark Room Lighting with Violet Rim Accent */}
+        {/* Lighting setup: Dark studio with violet rim & warm key accents */}
         <ambientLight intensity={0.4} />
         <directionalLight position={[2, 3, 2]} intensity={1.2} color="#FFFFFF" />
-        <directionalLight position={[-2, 1, 1]} intensity={0.8} color="#C084FC" />
-        <directionalLight position={[0, -2, -1]} intensity={0.5} color="#8B5CF6" />
+        <directionalLight position={[-2, 1, 1]} intensity={0.9} color="#C084FC" />
+        <directionalLight position={[0, -2, -1]} intensity={0.6} color="#8B5CF6" />
 
-        {/* Gentle floating motion */}
-        <Float speed={1.8} rotationIntensity={0.2} floatIntensity={0.4}>
+        {/* Subtle floating motion */}
+        <Float speed={1.8} rotationIntensity={0.18} floatIntensity={0.35}>
           <RobotModel
             isPoweringOn={isPoweringOn}
             isSpeaking={isSpeaking}
@@ -382,10 +462,10 @@ export default function RobotScene({
             smileMode={smileMode}
             lookAtCamera={lookAtCamera}
             headTilt={headTilt}
+            showFaceProjection={showFaceProjection}
           />
         </Float>
       </Canvas>
     </div>
   );
 }
-

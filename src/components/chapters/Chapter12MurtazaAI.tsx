@@ -425,6 +425,7 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
                 smileMode={smileMode}
                 lookAtCamera={lookAtCamera}
                 headTilt={headTilt}
+                showFaceProjection={lookAtCamera || smileMode === 3}
               />
 
               {/* Top-Right Skip / Quick Actions */}
