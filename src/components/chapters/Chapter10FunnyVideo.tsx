@@ -39,7 +39,7 @@ export const Chapter10FunnyVideo: React.FC<Chapter10FunnyVideoProps> = ({
           if (videoRef.current) {
             videoRef.current.muted = true;
             setIsMuted(true);
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
           }
         });
     }
@@ -53,7 +53,7 @@ export const Chapter10FunnyVideo: React.FC<Chapter10FunnyVideoProps> = ({
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
       setIsPlaying(true);
     }
   };
@@ -73,9 +73,9 @@ export const Chapter10FunnyVideo: React.FC<Chapter10FunnyVideoProps> = ({
     soundManager.playTap();
     if (containerRef.current) {
       if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
+        document.exitFullscreen().catch(() => { });
       } else {
-        containerRef.current.requestFullscreen().catch(() => {});
+        containerRef.current.requestFullscreen().catch(() => { });
       }
     }
   };
@@ -176,7 +176,7 @@ export const Chapter10FunnyVideo: React.FC<Chapter10FunnyVideoProps> = ({
           className="w-full p-4 rounded-2xl glass-panel border border-[#EC4899]/30 bg-[#120A1A]/85 shadow-lg text-center space-y-1.5"
         >
           <p className="text-xs sm:text-sm text-[#F7F2EA] leading-relaxed font-light">
-            Ye video dekhne k baad u can&apos;t say k mai chill act krti... <span className="inline-block">😂💃</span>
+            Ye video dekhne k baad u can&apos;t say k mai child act krti... <span className="inline-block">😂💃</span>
           </p>
           <p className="text-sm sm:text-base font-serif font-bold text-[#E8C88A] glow-gold flex items-center justify-center gap-1.5">
             <span>Its my Birthday Boyyy!</span>
