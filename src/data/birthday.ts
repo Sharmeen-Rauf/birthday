@@ -20,6 +20,7 @@ export const birthdayData: BirthdayData = {
     { id: 9, code: "09", title: "Kaszsoft", subtitle: "Visionary Founder ✨" },
     { id: 10, code: "10", title: "Birthday Boyyy", subtitle: "No Chill Zone 😂🎉" },
     { id: 11, code: "11", title: "The Final Letter", subtitle: "A Keepsake Forever 🤍" },
+    { id: 12, code: "★", title: "MURTAZA.AI", subtitle: "Version 30.0 // Humanoid Robot 🤖" },
   ],
 
   invitation: {

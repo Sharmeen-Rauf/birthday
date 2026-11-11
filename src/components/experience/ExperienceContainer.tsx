@@ -23,6 +23,7 @@ import { Chapter08NextDrive } from "../chapters/Chapter08NextDrive";
 import { Chapter09Kaszsoft } from "../chapters/Chapter09Kaszsoft";
 import { Chapter10FunnyVideo } from "../chapters/Chapter10FunnyVideo";
 import { Chapter10FinalLetter } from "../chapters/Chapter10FinalLetter";
+import { Chapter12MurtazaAI } from "../chapters/Chapter12MurtazaAI";
 
 export const ExperienceContainer: React.FC = () => {
   const [currentChapter, setCurrentChapter] = useState<ChapterId>(1);
@@ -146,7 +147,16 @@ export const ExperienceContainer: React.FC = () => {
               <Chapter10FunnyVideo onContinue={() => goToChapter(11)} />
             )}
             {currentChapter === 11 && (
-              <Chapter10FinalLetter onReplay={handleReplay} />
+              <Chapter10FinalLetter
+                onReplay={handleReplay}
+                onActivateBonusRobot={() => goToChapter(12)}
+              />
+            )}
+            {currentChapter === 12 && (
+              <Chapter12MurtazaAI
+                onBackToLetter={() => goToChapter(11)}
+                onRestartAll={handleReplay}
+              />
             )}
           </motion.div>
         </AnimatePresence>

@@ -2,16 +2,20 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Sparkles, RotateCcw, Heart, Copy, Check } from "lucide-react";
+import { Mail, Sparkles, RotateCcw, Heart, Copy, Check, Bot } from "lucide-react";
 import { soundManager } from "@/lib/sound";
 import { triggerWishSparkles } from "@/lib/confetti";
 import { birthdayData } from "@/data/birthday";
 
 interface Chapter10FinalLetterProps {
   onReplay: () => void;
+  onActivateBonusRobot?: () => void;
 }
 
-export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onReplay }) => {
+export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({
+  onReplay,
+  onActivateBonusRobot,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasCopied, setHasCopied] = useState<boolean>(false);
   const { finalLetter, recipient } = birthdayData;
@@ -177,6 +181,17 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onRe
                     </>
                   )}
                 </button>
+
+                {/* Optional Bonus Chapter: ACTIVATE MURTAZA.AI */}
+                {onActivateBonusRobot && (
+                  <button
+                    onClick={onActivateBonusRobot}
+                    className="w-full sm:w-auto px-6 py-3 rounded-full font-mono text-xs tracking-widest uppercase font-semibold text-white bg-gradient-to-r from-[#8B5CF6] via-[#EC4899] to-[#67E8F9] shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:shadow-[0_0_45px_rgba(139,92,246,0.9)] active:scale-95 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Bot className="w-4 h-4 text-white animate-bounce" />
+                    <span>ACTIVATE MURTAZA.AI (V30.0) 🤖</span>
+                  </button>
+                )}
               </div>
             </motion.div>
           </motion.div>
