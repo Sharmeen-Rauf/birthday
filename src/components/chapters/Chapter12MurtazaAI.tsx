@@ -353,8 +353,20 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
             animate={{ opacity: 1, scale: 1 }}
             className="w-full max-w-lg p-6 sm:p-10 rounded-3xl glass-panel border border-[#8B5CF6]/40 bg-[#0B0916]/85 text-center flex flex-col items-center shadow-[0_0_60px_rgba(139,92,246,0.25)]"
           >
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-[#8B5CF6]/30 via-[#EC4899]/20 to-[#67E8F9]/30 border border-[#8B5CF6]/60 flex items-center justify-center mb-6 shadow-[0_0_35px_rgba(139,92,246,0.4)] animate-pulse">
-              <Bot className="w-10 h-10 text-white" />
+            {/* Prominent Murtaza Headshot Cutout in Cyber Frame */}
+            <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-tr from-[#8B5CF6] via-[#EC4899] to-[#67E8F9] shadow-[0_0_40px_rgba(139,92,246,0.6)] mb-5">
+              <div className="w-full h-full rounded-full overflow-hidden bg-[#0A0815] relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/murtaza-cutout.png"
+                  alt="Murtaza Kazmi"
+                  className="w-full h-full object-cover object-top scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#8B5CF6]/20 via-transparent to-transparent pointer-events-none" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#080812] border border-[#67E8F9] flex items-center justify-center shadow-lg">
+                <Bot className="w-4 h-4 text-[#67E8F9]" />
+              </div>
             </div>
 
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-[#67E8F9]/30 text-[10px] font-mono tracking-widest text-[#67E8F9] uppercase mb-2">
@@ -420,6 +432,22 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
                 headTilt={headTilt}
                 showFaceProjection={lookAtCamera || smileMode === 3}
               />
+
+              {/* Top-Left Biometric Identity HUD Pill with Prominent Face */}
+              <div className="absolute top-3 left-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-[#8B5CF6]/40 shadow-lg pointer-events-none">
+                <div className="w-6 h-6 rounded-full overflow-hidden border border-[#67E8F9] flex-shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/murtaza-cutout.png"
+                    alt="Murtaza Kazmi"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <div className="text-left font-mono leading-none">
+                  <p className="text-[10px] text-white font-semibold tracking-wide">MURTAZA KAZMI</p>
+                  <p className="text-[8px] text-[#67E8F9] tracking-widest uppercase">BIO-SYNC: 100%</p>
+                </div>
+              </div>
 
               {/* Top-Right Skip / Quick Actions */}
               {stage === "speaking" && (

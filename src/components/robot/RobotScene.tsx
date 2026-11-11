@@ -34,13 +34,15 @@ function RobotModel({
 
   const [isBlinking, setIsBlinking] = useState(false);
 
-  // Load Murtaza's reference portrait as a holographic visor projection texture
+  // Load Murtaza's realistic headshot cutout texture
   const murtazaTexture = useMemo(() => {
     if (typeof window === "undefined") return null;
     const loader = new THREE.TextureLoader();
-    const tex = loader.load("/images/background image-start.png");
-    tex.wrapS = THREE.ClampToEdgeWrapping;
-    tex.wrapT = THREE.ClampToEdgeWrapping;
+    const tex = loader.load("/images/murtaza-cutout.png");
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.generateMipmaps = true;
+    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    tex.magFilter = THREE.LinearFilter;
     return tex;
   }, []);
 
@@ -140,19 +142,14 @@ function RobotModel({
 
     // Holographic face projection & biometric scan line
     if (holoPlaneRef.current) {
-      const targetOpacity =
-        (showFaceProjection || lookAtCamera || smileMode === 3) && isPoweringOn
-          ? 0.45 + Math.sin(time * 3) * 0.08
-          : isPoweringOn
-          ? 0.18
-          : 0;
+      const targetOpacity = isPoweringOn ? (isSpeaking ? 1.0 : 0.98) : 0.65;
       const mat = holoPlaneRef.current.material as THREE.MeshStandardMaterial;
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, 0.1);
     }
 
     if (scanLineRef.current) {
-      // Moving laser scan line
-      scanLineRef.current.position.y = Math.sin(time * 2.5) * 0.3;
+      // Moving laser scan line across face
+      scanLineRef.current.position.y = Math.sin(time * 2.2) * 0.42;
     }
 
     // Chest Kaszsoft arc core pulse
@@ -329,56 +326,57 @@ function RobotModel({
           />
         </mesh>
 
-        {/* HOLOGRAPHIC SCAN DISPLAY (Murtaza's actual face projection on visor) */}
+        {/* PROMINENT REALISTIC FACE DISPLAY (Murtaza's Headshot Cutout) */}
         {murtazaTexture && (
-          <mesh ref={holoPlaneRef} position={[0, -0.04, 0.49]}>
-            <planeGeometry args={[0.66, 0.64]} />
+          <mesh ref={holoPlaneRef} position={[0, -0.05, 0.49]}>
+            <planeGeometry args={[1.2, 1.2]} />
             <meshStandardMaterial
               map={murtazaTexture}
               transparent
-              opacity={0.2}
-              color="#C084FC"
-              blending={THREE.AdditiveBlending}
+              opacity={1}
+              roughness={0.25}
+              metalness={0.05}
+              side={THREE.DoubleSide}
               depthWrite={false}
             />
           </mesh>
         )}
 
-        {/* Animated Cybernetic Scan Line */}
-        <mesh ref={scanLineRef} position={[0, 0, 0.5]}>
-          <planeGeometry args={[0.66, 0.02]} />
+        {/* Animated Cybernetic Scan Line across Face */}
+        <mesh ref={scanLineRef} position={[0, 0, 0.51]}>
+          <planeGeometry args={[0.9, 0.02]} />
           <meshBasicMaterial
             color="#67E8F9"
             transparent
-            opacity={isPoweringOn ? 0.6 : 0}
+            opacity={isPoweringOn ? 0.75 : 0}
             blending={THREE.AdditiveBlending}
           />
         </mesh>
 
-        {/* DUAL GLOWING PURPLE EYES */}
-        <group position={[0, 0.07, 0.51]}>
-          <mesh ref={leftEyeRef} position={[-0.19, 0, 0]}>
-            <boxGeometry args={[0.17, 0.065, 0.03]} />
+        {/* DUAL GLOWING PURPLE OPTIC ACCENTS (Subtle Cybernetic Eye Rings) */}
+        <group position={[0, 0.08, 0.52]}>
+          <mesh ref={leftEyeRef} position={[-0.14, 0, 0]}>
+            <torusGeometry args={[0.045, 0.007, 8, 16]} />
             {purpleNeonGlow}
           </mesh>
-          <mesh ref={rightEyeRef} position={[0.19, 0, 0]}>
-            <boxGeometry args={[0.17, 0.065, 0.03]} />
+          <mesh ref={rightEyeRef} position={[0.14, 0, 0]}>
+            <torusGeometry args={[0.045, 0.007, 8, 16]} />
             {purpleNeonGlow}
           </mesh>
 
           {isPoweringOn && (
             <>
               <pointLight
-                position={[-0.19, 0, 0.18]}
+                position={[-0.14, 0, 0.1]}
                 color="#C084FC"
-                intensity={isSpeaking ? 3.0 : 1.8}
-                distance={2.2}
+                intensity={isSpeaking ? 2.5 : 1.4}
+                distance={1.8}
               />
               <pointLight
-                position={[0.19, 0, 0.18]}
+                position={[0.14, 0, 0.1]}
                 color="#C084FC"
-                intensity={isSpeaking ? 3.0 : 1.8}
-                distance={2.2}
+                intensity={isSpeaking ? 2.5 : 1.4}
+                distance={1.8}
               />
             </>
           )}
