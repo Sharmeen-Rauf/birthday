@@ -93,3 +93,4 @@ export const EasterEggToast: React.FC<EasterEggToastProps> = ({ egg, onClose }) 
     </AnimatePresence>
   );
 };
+

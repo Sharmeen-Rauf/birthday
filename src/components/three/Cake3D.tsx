@@ -171,3 +171,4 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
     </group>
   );
 };
+

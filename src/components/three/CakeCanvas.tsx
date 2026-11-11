@@ -73,3 +73,4 @@ export const CakeCanvas: React.FC<CakeCanvasProps> = ({ isExtinguished }) => {
     </div>
   );
 };
+

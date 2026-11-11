@@ -106,3 +106,4 @@ export const Chapter02Celebration: React.FC<Chapter02CelebrationProps> = ({ onCo
     </div>
   );
 };
+

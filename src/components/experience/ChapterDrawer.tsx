@@ -130,3 +130,4 @@ export const ChapterDrawer: React.FC<ChapterDrawerProps> = ({
     </AnimatePresence>
   );
 };
+

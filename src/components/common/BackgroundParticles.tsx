@@ -111,3 +111,4 @@ export const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
     />
   );
 };
+

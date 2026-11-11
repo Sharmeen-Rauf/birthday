@@ -130,3 +130,4 @@ export const Chapter01Invitation: React.FC<Chapter01InvitationProps> = ({ onUnlo
     </div>
   );
 };
+

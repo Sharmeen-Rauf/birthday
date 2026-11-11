@@ -178,3 +178,4 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
     </div>
   );
 };
+

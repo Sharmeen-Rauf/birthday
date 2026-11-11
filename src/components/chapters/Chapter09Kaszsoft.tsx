@@ -144,3 +144,4 @@ export const Chapter09Kaszsoft: React.FC<Chapter09KaszsoftProps> = ({
     </div>
   );
 };
+
