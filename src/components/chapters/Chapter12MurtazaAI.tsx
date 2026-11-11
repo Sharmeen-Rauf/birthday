@@ -226,6 +226,16 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
   const handleActivate = () => {
     soundManager.playTap();
     soundManager.playEasterEgg();
+
+    // Prime & unlock Web Speech API audio during this direct user click (crucial for iOS Safari & Android)
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      try {
+        const unlockUtterance = new SpeechSynthesisUtterance("");
+        unlockUtterance.volume = 0;
+        window.speechSynthesis.speak(unlockUtterance);
+      } catch {}
+    }
+
     setStage("booting");
     setBootLog(["[SYS_INIT] Initializing Neural Core v30.0..."]);
 
