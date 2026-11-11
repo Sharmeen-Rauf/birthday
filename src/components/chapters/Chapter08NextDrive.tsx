@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Compass, Sparkles, ArrowRight, Shield, Gauge, Cpu, CheckCircle } from "lucide-react";
+import { Compass, Sparkles, ArrowRight, Gauge, Cpu, CheckCircle, Camera } from "lucide-react";
 import { ImageWithFallback } from "../common/ImageWithFallback";
 import { soundManager } from "@/lib/sound";
 import { birthdayData } from "@/data/birthday";
@@ -13,11 +13,23 @@ interface Chapter08NextDriveProps {
 
 export const Chapter08NextDrive: React.FC<Chapter08NextDriveProps> = ({ onContinue }) => {
   const [isSpecsOpen, setIsSpecsOpen] = useState<boolean>(false);
+  const [activeAngleIndex, setActiveAngleIndex] = useState<number>(0);
   const { car } = birthdayData;
+
+  const angles = [
+    { label: "Dynamic Profile", badge: "AERODYNAMIC STANCE", desc: "Metallic charcoal grey under mountain twilight" },
+    { label: "Sunset Highway", badge: "CRUISING ALTITUDE", desc: "Tuned suspension gliding along winding ridges" },
+    { label: "Cockpit Lounge", badge: "TECH COCKPIT", desc: "Dual panoramic displays & ambient mood lighting" },
+  ];
 
   const handleToggleSpecs = () => {
     soundManager.playTap();
     setIsSpecsOpen(!isSpecsOpen);
+  };
+
+  const handleSelectAngle = (idx: number) => {
+    soundManager.playTap();
+    setActiveAngleIndex(idx);
   };
 
   return (
@@ -60,11 +72,35 @@ export const Chapter08NextDrive: React.FC<Chapter08NextDriveProps> = ({ onContin
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#080810] via-transparent to-transparent opacity-70" />
 
-            <div className="absolute bottom-3 left-4">
+            <div className="absolute bottom-3 left-4 flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-[#67E8F9]">
-                METALLIC CHARCOAL GREY
+                {angles[activeAngleIndex].badge}
+              </span>
+              <span className="hidden sm:inline-block text-[11px] font-mono text-[#E8C88A]">
+                {angles[activeAngleIndex].desc}
               </span>
             </div>
+          </div>
+
+          {/* Perspective Selector Pills */}
+          <div className="mt-3 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <span className="text-[10px] font-mono text-[#94A3B8] uppercase flex items-center gap-1 mr-1">
+              <Camera className="w-3 h-3 text-[#E8C88A]" />
+              POV:
+            </span>
+            {angles.map((ang, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSelectAngle(idx)}
+                className={`px-3 py-1 rounded-full text-[11px] font-mono tracking-wider transition-all whitespace-nowrap ${
+                  activeAngleIndex === idx
+                    ? "bg-[#E8C88A] text-black font-semibold shadow-[0_0_12px_rgba(232,200,138,0.4)]"
+                    : "glass-pill text-[#94A3B8] hover:text-white"
+                }`}
+              >
+                {ang.label}
+              </button>
+            ))}
           </div>
 
           {/* Short Narrative Message */}
@@ -86,7 +122,7 @@ export const Chapter08NextDrive: React.FC<Chapter08NextDriveProps> = ({ onContin
               <Sparkles className="w-3.5 h-3.5" />
               <span>{isSpecsOpen ? "Hide Specifications" : "Explore The Car & Why It Fits"}</span>
             </button>
-            <span className="text-[11px] font-mono text-[#94A3B8]">1.5T TURBO</span>
+            <span className="text-[11px] font-mono text-[#94A3B8]">1.5T DIRECT INJECTION</span>
           </div>
 
           {/* Expandable Specifications & Reasons */}
@@ -155,4 +191,3 @@ export const Chapter08NextDrive: React.FC<Chapter08NextDriveProps> = ({ onContin
     </div>
   );
 };
-

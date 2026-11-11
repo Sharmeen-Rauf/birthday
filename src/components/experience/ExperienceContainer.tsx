@@ -10,6 +10,7 @@ import { Navbar } from "../common/Navbar";
 import { BackgroundParticles } from "../common/BackgroundParticles";
 import { EasterEggToast, EasterEggEvent } from "../common/EasterEggToast";
 import { ChapterDrawer } from "./ChapterDrawer";
+import { CustomCursor } from "../common/CustomCursor";
 
 import { Chapter01Invitation } from "../chapters/Chapter01Invitation";
 import { Chapter02Celebration } from "../chapters/Chapter02Celebration";
@@ -79,6 +80,9 @@ export const ExperienceContainer: React.FC = () => {
 
   return (
     <main className="relative min-h-[100dvh] w-full bg-[#080810] text-[#F7F2EA] flex flex-col justify-between overflow-x-hidden selection:bg-[#8B5CF6]/40 selection:text-[#E8C88A]">
+      {/* Desktop magnetic luxury cursor */}
+      <CustomCursor />
+
       {/* Background stars & celestial particles */}
       <BackgroundParticles intensity={particleIntensity} accentColor={particleColor} />
 

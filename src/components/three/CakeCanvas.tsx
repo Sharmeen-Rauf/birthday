@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 import { Cake3D } from "./Cake3D";
 
 interface CakeCanvasProps {
@@ -26,51 +27,108 @@ export const CakeCanvas: React.FC<CakeCanvasProps> = ({ isExtinguished }) => {
   }, []);
 
   if (!mounted) {
-    return <div className="w-full h-72 sm:h-96" />;
+    return <div className="w-full h-80 sm:h-[420px]" />;
   }
 
   // Graceful 2.5D Fallback for devices without WebGL
   if (!hasWebGL) {
     return (
-      <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto flex flex-col items-center justify-center">
-        <div className="relative w-48 h-48 rounded-2xl bg-gradient-to-br from-[#10101C] to-[#1E1E2E] border border-[#E8C88A]/30 shadow-2xl flex flex-col items-center justify-end p-4">
+      <div className="relative w-72 h-80 sm:w-96 sm:h-[400px] mx-auto flex flex-col items-center justify-center">
+        <div className="relative w-64 h-72 sm:w-80 sm:h-80 rounded-3xl bg-gradient-to-br from-[#10101C] via-[#0E0F1E] to-[#080810] border border-[#E8C88A]/35 shadow-2xl flex flex-col items-center justify-end p-5">
           {/* Candle Flames */}
-          <div className="flex gap-4 mb-3">
+          <div className="flex gap-6 mb-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex flex-col items-center">
                 {!isExtinguished ? (
-                  <div className="w-3.5 h-6 bg-gradient-to-t from-orange-500 to-amber-200 rounded-full animate-flame blur-[1px] shadow-[0_0_12px_#FFAA00]" />
+                  <div className="w-4 h-7 bg-gradient-to-t from-orange-500 via-amber-300 to-white rounded-full animate-flame blur-[1px] shadow-[0_0_15px_#FFAA00]" />
                 ) : (
-                  <div className="w-1.5 h-6 bg-slate-500/30 rounded-full animate-pulse" />
+                  <div className="w-1.5 h-6 bg-slate-400/40 rounded-full animate-pulse" />
                 )}
-                <div className="w-2 h-7 bg-amber-100/90 rounded-sm mt-0.5" />
+                <div className="w-2.5 h-8 bg-gradient-to-b from-[#F7F2EA] to-[#E8C88A] rounded-sm mt-0.5 border border-[#E8C88A]/50" />
               </div>
             ))}
           </div>
-          {/* Cake Tiers */}
-          <div className="w-32 h-10 rounded-t-lg bg-[#14142B] border-b-2 border-[#E8C88A]" />
-          <div className="w-40 h-14 rounded-b-lg bg-[#0E1224] border-t-2 border-[#E8C88A]" />
+
+          {/* 3 Tiers */}
+          <div className="w-28 h-10 rounded-t-lg bg-[#18153B] border-t-2 border-x-2 border-[#E8C88A] relative shadow-md">
+            <div className="absolute -bottom-1 left-0 right-0 h-1 bg-[#E8C88A]" />
+          </div>
+          <div className="w-44 h-12 rounded-t-lg bg-[#13112E] border-t-2 border-x-2 border-[#E8C88A] relative shadow-lg">
+            <div className="absolute -bottom-1 left-0 right-0 h-1.5 bg-[#E8C88A]" />
+          </div>
+          <div className="w-60 h-16 rounded-b-xl bg-[#0B0F22] border-2 border-[#E8C88A] relative shadow-2xl">
+            <div className="absolute bottom-2 left-0 right-0 flex justify-around px-4">
+              {Array.from({ length: 9 }).map((_, idx) => (
+                <div key={idx} className="w-1.5 h-1.5 rounded-full bg-[#E8C88A]" />
+              ))}
+            </div>
+          </div>
+          {/* Gold Pedestal */}
+          <div className="w-48 h-3 rounded-full bg-[#E8C88A] mt-2 shadow-[0_0_15px_rgba(232,200,138,0.5)]" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-72 sm:h-96 max-w-lg mx-auto">
-      <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-xs font-mono text-[#94A3B8]">Sculpting your midnight cake...</div>}>
-        <Canvas
-          camera={{ position: [0, 1.2, 3.8], fov: 45 }}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        >
-          <ambientLight intensity={0.7} />
-          <directionalLight position={[5, 6, 4]} intensity={1.2} color="#F7F2EA" />
-          <pointLight position={[-4, 3, -2]} intensity={0.8} color="#8B5CF6" />
-          <pointLight position={[0, -2, 2]} intensity={0.4} color="#67E8F9" />
+    <div className="relative w-full h-80 sm:h-[420px] max-w-xl mx-auto cursor-grab active:cursor-grabbing">
+      {/* Interactive touch hint */}
+      <div className="absolute top-2 right-4 z-10 pointer-events-none">
+        <span className="text-[10px] font-mono tracking-widest text-[#E8C88A]/80 uppercase px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-[#E8C88A]/20">
+          360° Drag To Inspect
+        </span>
+      </div>
 
+      <Suspense
+        fallback={
+          <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+            <div className="w-8 h-8 border-2 border-[#E8C88A]/30 border-t-[#E8C88A] rounded-full animate-spin" />
+            <span className="text-xs font-mono text-[#E8C88A] tracking-wider uppercase">
+              Sculpting Midnight Cake...
+            </span>
+          </div>
+        }
+      >
+        <Canvas
+          camera={{ position: [0, 1.4, 4.2], fov: 42 }}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance",
+          }}
+        >
+          {/* Cinematic Studio Lights */}
+          <ambientLight intensity={0.8} />
+          {/* Key warm golden spotlight from top-right */}
+          <spotLight
+            position={[4, 6, 4]}
+            angle={0.6}
+            penumbra={0.8}
+            intensity={2.2}
+            color="#FFF2D6"
+          />
+          {/* Soft fill light from left */}
+          <directionalLight position={[-4, 3, 2]} intensity={0.9} color="#8B5CF6" />
+          {/* Rim light from behind for luxury edge specular highlight */}
+          <pointLight position={[0, 4, -3]} intensity={1.5} color="#67E8F9" />
+          {/* Subtle bottom ground bounce */}
+          <pointLight position={[0, -2, 2]} intensity={0.4} color="#E8C88A" />
+
+          {/* 3D Cake Object */}
           <Cake3D isExtinguished={isExtinguished} />
+
+          {/* Touch & Mouse 360 Orbit Controls with damping */}
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            dampingFactor={0.06}
+            minPolarAngle={Math.PI / 4}
+            maxPolarAngle={Math.PI / 2 + 0.1}
+            autoRotate={!isExtinguished}
+            autoRotateSpeed={0.8}
+          />
         </Canvas>
       </Suspense>
     </div>
   );
 };
-

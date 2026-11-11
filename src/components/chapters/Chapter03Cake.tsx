@@ -82,10 +82,24 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
       {/* Background illumination warmth after wish is made */}
       <motion.div
         animate={{
-          backgroundColor: isExtinguished ? "rgba(232, 200, 138, 0.08)" : "transparent",
+          backgroundColor: isExtinguished ? "rgba(232, 200, 138, 0.12)" : "transparent",
         }}
         transition={{ duration: 2 }}
         className="absolute inset-0 pointer-events-none"
+      />
+
+      {/* Atmospheric Candle Radial Aura */}
+      <motion.div
+        animate={{
+          scale: isExtinguished ? [1, 1.4, 0.8] : [1, 1.05, 0.98, 1],
+          opacity: isExtinguished ? 0.1 : 0.35,
+        }}
+        transition={{
+          repeat: isExtinguished ? 0 : Infinity,
+          duration: 3,
+          ease: "easeInOut",
+        }}
+        className="absolute w-[360px] sm:w-[500px] h-[360px] sm:h-[500px] bg-gradient-to-tr from-[#FFA500]/20 via-[#E8C88A]/15 to-transparent rounded-full blur-[100px] pointer-events-none"
       />
 
       {/* Top Heading */}
