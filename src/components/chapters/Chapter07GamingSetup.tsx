@@ -192,7 +192,7 @@ export const Chapter07GamingSetup: React.FC<Chapter07GamingSetupProps> = ({
           onClick={onContinue}
           className="px-8 py-3 rounded-full font-mono text-xs sm:text-sm tracking-widest uppercase font-semibold text-[#080810] bg-gradient-to-r from-[#C084FC] via-[#F7F2EA] to-[#67E8F9] shadow-[0_0_25px_rgba(192,132,252,0.4)] hover:shadow-[0_0_40px_rgba(192,132,252,0.65)] active:scale-95 transition-all flex items-center gap-3"
         >
-          <span>SEE YOUR NEXT DRIVE</span>
+          <span>SEE SUGGESTION #2 🏎️💨</span>
           <ArrowRight className="w-4 h-4 text-[#080810]" />
         </button>
       </div>
