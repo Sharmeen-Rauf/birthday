@@ -65,7 +65,7 @@ export const ExperienceContainer: React.FC = () => {
   const particleIntensity =
     currentChapter === 2
       ? "celebration"
-      : currentChapter === 5 || currentChapter === 7
+      : currentChapter === 5 || currentChapter === 6 || currentChapter === 7
       ? "medium"
       : "subtle";
 

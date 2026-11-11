@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Play, Pause, RotateCcw, Maximize, Sparkles, ArrowRight, Film, Heart } from "lucide-react";
+import { Play, Pause, RotateCcw, Maximize, Sparkles, ArrowRight, Heart, Volume2, VolumeX } from "lucide-react";
 import { ImageWithFallback } from "../common/ImageWithFallback";
 import { soundManager } from "@/lib/sound";
-import { birthdayData } from "@/data/birthday";
 
 interface Chapter06FilmProps {
   onContinue: () => void;
@@ -15,9 +14,40 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [hasEnded, setHasEnded] = useState<boolean>(false);
   const [hasVideoError, setHasVideoError] = useState<boolean>(false);
+  const [isMutedState, setIsMutedState] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { cinematicFilm } = birthdayData;
+
+  // Autoplay after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            setHasEnded(false);
+            setIsMutedState(videoRef.current?.muted || false);
+          })
+          .catch(() => {
+            // If autoplay with sound is blocked by browser policy, fallback to muted autoplay
+            if (videoRef.current) {
+              videoRef.current.muted = true;
+              setIsMutedState(true);
+              videoRef.current
+                .play()
+                .then(() => {
+                  setIsPlaying(true);
+                  setHasEnded(false);
+                })
+                .catch(() => {});
+            }
+          });
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleTogglePlay = () => {
     soundManager.playTap();
@@ -27,6 +57,8 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
+      videoRef.current.muted = false;
+      setIsMutedState(false);
       videoRef.current
         .play()
         .then(() => {
@@ -40,10 +72,20 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
     }
   };
 
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMutedState(nextMuted);
+    }
+  };
+
   const handleReplay = () => {
     soundManager.playTap();
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
+      videoRef.current.muted = false;
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
       setHasEnded(false);
@@ -62,25 +104,14 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full flex flex-col items-center justify-between py-12 px-4 sm:px-6 overflow-hidden">
+    <div className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-8 px-4 sm:px-6 overflow-hidden">
       {/* Background ambient cinema glow */}
       <div className="absolute w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] bg-gradient-to-tr from-[#8B5CF6]/20 via-[#67E8F9]/15 to-transparent rounded-full blur-[140px] pointer-events-none" />
-
-      {/* Header - Phrasing Above Video */}
-      <div className="relative z-10 text-center max-w-xl mx-auto mb-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-[#E8C88A]/30 text-xs font-mono tracking-widest text-[#E8C88A] uppercase mb-2 shadow-sm">
-          <Film className="w-3.5 h-3.5 text-[#E8C88A]" />
-          <span>CHAPTER 05 // CINEMATIC CHRONICLE</span>
-        </div>
-        <h2 className="text-2xl sm:text-4xl font-serif font-black text-[#F7F2EA] tracking-tight glow-gold">
-          Handsome Hunk • Spontaneous • Intelligent
-        </h2>
-      </div>
 
       {/* Responsive Video Theatre Container (Mobile-First 9:16 / Universal) */}
       <div
         ref={containerRef}
-        className="relative z-10 my-3 w-full max-w-[320px] sm:max-w-[360px] aspect-[9/16] max-h-[68vh] rounded-3xl overflow-hidden glass-panel border border-[#8B5CF6]/40 shadow-[0_0_50px_rgba(139,92,246,0.3)] flex flex-col justify-between p-3 group"
+        className="relative z-10 my-auto w-full max-w-[320px] sm:max-w-[360px] aspect-[9/16] max-h-[72vh] rounded-3xl overflow-hidden glass-panel border border-[#8B5CF6]/40 shadow-[0_0_50px_rgba(139,92,246,0.3)] flex flex-col justify-between p-3 group"
       >
         {/* Actual Video */}
         {!hasVideoError ? (
@@ -113,7 +144,7 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
             <div className="relative z-10 p-5 rounded-2xl glass-panel border border-[#E8C88A]/30">
               <Sparkles className="w-8 h-8 text-[#E8C88A] mx-auto mb-2 animate-pulse" />
               <h4 className="text-lg font-serif font-bold text-[#F7F2EA]">
-                Google Flow Premiere
+                Birthday Film
               </h4>
               <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
                 Playing <code className="text-[#67E8F9]">complete-video-googleflow.mp4</code>
@@ -122,11 +153,29 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
           </div>
         )}
 
-        {/* Top Controls Overlay */}
+        {/* Top Controls Overlay - Mute Toggle + Fullscreen */}
         <div className="relative z-20 flex items-center justify-between p-1 pointer-events-none">
-          <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-white uppercase">
-            GOOGLE FLOW // 4K REEL
-          </span>
+          {isPlaying && isMutedState ? (
+            <button
+              onClick={handleToggleMute}
+              className="pointer-events-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-[#E8C88A]/50 text-[10px] font-mono tracking-wider text-[#E8C88A] hover:bg-[#E8C88A]/20 transition-all animate-pulse"
+              aria-label="Unmute Video"
+            >
+              <VolumeX className="w-3.5 h-3.5 text-[#E8C88A]" />
+              <span>TAP FOR SOUND</span>
+            </button>
+          ) : isPlaying ? (
+            <button
+              onClick={handleToggleMute}
+              className="pointer-events-auto w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+              aria-label="Mute Video"
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+            </button>
+          ) : (
+            <div />
+          )}
+
           <button
             onClick={handleFullscreen}
             className="pointer-events-auto w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-[#67E8F9] transition-colors"
@@ -136,7 +185,7 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
           </button>
         </div>
 
-        {/* Center Play Button Overlay */}
+        {/* Center Play Button Overlay (Visible only when not playing) */}
         <div className="relative z-20 flex items-center justify-center pointer-events-none">
           {!isPlaying && (
             <motion.button
@@ -178,7 +227,7 @@ export const Chapter06Film: React.FC<Chapter06FilmProps> = ({ onContinue }) => {
       </div>
 
       {/* Phrasing Below Video & Continue Button */}
-      <div className="relative z-10 text-center flex flex-col items-center max-w-md mx-auto mt-2">
+      <div className="relative z-10 text-center flex flex-col items-center max-w-md mx-auto mt-3">
         <p className="text-base sm:text-xl font-serif italic text-[#E8C88A] glow-gold flex items-center justify-center gap-1.5">
           <span>&ldquo;...with a genuinely beautiful heart.&rdquo;</span>
           <Heart className="w-4 h-4 fill-[#E8C88A] text-[#E8C88A] inline-block" />
