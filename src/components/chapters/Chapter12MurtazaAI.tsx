@@ -136,6 +136,11 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
   useEffect(() => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       synthRef.current = window.speechSynthesis;
+      // Pre-fetch voices
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
     }
     return () => {
       if (synthRef.current) {
@@ -507,3 +512,4 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
     </div>
   );
 };
+

@@ -394,7 +394,7 @@ buildYourDreams(future);`,
     paragraphs: [
       "Maine apni poori intensity aur dil laga kar ye sab kiya hai, because aapse hi toh seekha hai ke it's not just the touch, it's the intensity that matters. 🤍",
       "I hope mere little efforts dekh kar aapke face par woh genuine wali smile aayi ho. 🥹",
-      "Apke special day par ek chota sa thank you toh expect krsakhti, Mr. Kazmi! 🤍✨",
+      "I just wanted to make your day a little more special, in my own little way Mr Kazmi 🤍✨",
     ],
     heroMessage: "HAPPY BIRTHDAY, MR. KAZMI 🤍",
     recipientTitle: "THE MIND BEHIND KASZSOFT",
