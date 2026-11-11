@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E2235"/>
+      <stop offset="100%" stop-color="#080810"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="40" />
+    </filter>
+  </defs>
+  
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="400" r="280" fill="url(#glow)"/>
+  
+  <!-- Subtle Grid Texture -->
+  <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="1000"/>
+    <line x1="300" y1="0" x2="300" y2="1000"/>
+    <line x1="500" y1="0" x2="500" y2="1000"/>
+    <line x1="700" y1="0" x2="700" y2="1000"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="0" y1="600" x2="800" y2="600"/>
+    <line x1="0" y1="800" x2="800" y2="800"/>
+  </g>
+
+  <!-- Border Card Frame -->
+  <rect x="30" y="30" width="740" height="940" rx="24" fill="none" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.3"/>
+  <rect x="40" y="40" width="720" height="920" rx="16" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Icon Center Piece -->
+  <circle cx="400" cy="420" r="90" fill="rgba(16,16,28,0.8)" stroke="#38BDF8" stroke-width="2" stroke-opacity="0.5"/>
+  <text x="400" y="445" font-family="-apple-system, sans-serif" font-size="64" fill="#38BDF8" text-anchor="middle">⛰️</text>
+
+  <!-- Title & Subtitle -->
+  <text x="400" y="600" font-family="'Playfair Display', Georgia, serif" font-size="44" font-weight="bold" fill="#F7F2EA" text-anchor="middle" letter-spacing="2">Mountain Peaks</text>
+  <text x="400" y="650" font-family="-apple-system, sans-serif" font-size="18" font-weight="500" fill="#38BDF8" text-anchor="middle" letter-spacing="4">ABOVE THE CLOUDS</text>
+  
+  <!-- Subtle Tag -->
+  <rect x="280" y="850" width="240" height="38" rx="19" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="400" y="874" font-family="-apple-system, sans-serif" font-size="13" fill="#94A3B8" text-anchor="middle" letter-spacing="1.5">REPLACE WITH PHOTO</text>
+</svg>

@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #080810;
+  --bg-secondary: #10101C;
+  --bg-glass: rgba(16, 16, 28, 0.72);
+  --electric-violet: #8B5CF6;
+  --soft-cyan: #67E8F9;
+  --champagne-gold: #E8C88A;
+  --warm-ivory: #F7F2EA;
+  --accent-pink: #F3A6C8;
+  --muted-text: #94A3B8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --color-primary-dark: #080810;
+  --color-secondary-dark: #10101C;
+  --color-electric-violet: #8B5CF6;
+  --color-soft-cyan: #67E8F9;
+  --color-champagne-gold: #E8C88A;
+  --color-warm-ivory: #F7F2EA;
+  --color-accent-pink: #F3A6C8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--warm-ivory);
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  scroll-behavior: smooth;
+  user-select: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #080810;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.6);
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(16, 16, 28, 0.68);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 200, 138, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-violet {
+  background: rgba(16, 16, 28, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.12);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Text glow utilities */
+.glow-gold {
+  text-shadow: 0 0 20px rgba(232, 200, 138, 0.45), 0 0 40px rgba(232, 200, 138, 0.2);
+}
+
+.glow-violet {
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.25);
+}
+
+.glow-cyan {
+  text-shadow: 0 0 20px rgba(103, 232, 249, 0.5), 0 0 40px rgba(103, 232, 249, 0.25);
+}
+
+/* Hide scrollbar for clean horizontal carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animated keyframes */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) skewX(0deg); opacity: 0.95; }
+  25% { transform: scale(1.08, 0.95) skewX(1deg); opacity: 1; }
+  50% { transform: scale(0.96, 1.05) skewX(-1.5deg); opacity: 0.9; }
+  75% { transform: scale(1.04, 0.98) skewX(0.5deg); opacity: 0.98; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.animate-flame {
+  animation: flameFlicker 0.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #F7F2EA 0%, #E8C88A 40%, #67E8F9 60%, #F7F2EA 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 8s linear infinite;
 }

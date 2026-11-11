@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="kaszGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="50%" stop-color="#67E8F9"/>
+      <stop offset="100%" stop-color="#E8C88A"/>
+    </linearGradient>
+  </defs>
+  <!-- Hexagon / Cube monogram -->
+  <g transform="translate(15, 20)">
+    <polygon points="40,5 75,25 75,65 40,85 5,65 5,25" fill="none" stroke="url(#kaszGrad)" stroke-width="4" stroke-linejoin="round"/>
+    <polygon points="40,5 75,25 40,45 5,25" fill="rgba(139, 92, 246, 0.3)"/>
+    <polygon points="40,45 75,25 75,65 40,85" fill="rgba(103, 232, 249, 0.2)"/>
+    <polygon points="40,45 5,25 5,65 40,85" fill="rgba(232, 200, 138, 0.2)"/>
+    <circle cx="40" cy="45" r="4" fill="#FFFFFF"/>
+  </g>
+  <!-- Brand text -->
+  <text x="110" y="65" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="36" font-weight="900" fill="#FFFFFF" letter-spacing="3">KASZ<tspan fill="#8B5CF6">SOFT</tspan></text>
+  <text x="112" y="85" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#E8C88A" letter-spacing="4">ENGINEERING THE FUTURE</text>
+</svg>
