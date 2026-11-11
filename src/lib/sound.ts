@@ -264,6 +264,64 @@ class SoundManager {
   }
 
   /**
+   * Sound effect: Mechanical Keyboard Click
+   */
+  public playKeyboardClick() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.audioCtx) return;
+
+    try {
+      const ctx = this.audioCtx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "square";
+      osc.frequency.setValueAtTime(1400, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.04);
+
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start();
+      osc.stop(ctx.currentTime + 0.04);
+    } catch {}
+  }
+
+  /**
+   * Sound effect: PC Turbo Fan Hum
+   */
+  public playFanBoost() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.audioCtx) return;
+
+    try {
+      const ctx = this.audioCtx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(180, ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(380, ctx.currentTime + 0.4);
+      osc.frequency.linearRampToValueAtTime(220, ctx.currentTime + 1.2);
+
+      gain.gain.setValueAtTime(0.01, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.4);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start();
+      osc.stop(ctx.currentTime + 1.25);
+    } catch {}
+  }
+
+  /**
    * Sound effect: Subtle UI tap
    */
   public playTap() {

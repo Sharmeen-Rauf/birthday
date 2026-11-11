@@ -37,7 +37,7 @@ export const birthdayData: BirthdayData = {
   cake: {
     preface: "Before anything else...",
     instruction: "Make a wish in your heart.",
-    buttonText: "BLOW THE CANDLES",
+    buttonText: "BLOW THE CANDLE",
     blownWish: "May every quiet prayer and bold ambition come true.",
     blownSubtext: "The universe heard you. Now let's explore what makes you extraordinary.",
   },

@@ -35,28 +35,29 @@ export const CakeCanvas: React.FC<CakeCanvasProps> = ({ isExtinguished }) => {
     return (
       <div className="relative w-72 h-80 sm:w-96 sm:h-[400px] mx-auto flex flex-col items-center justify-center">
         <div className="relative w-64 h-72 sm:w-80 sm:h-80 rounded-3xl bg-gradient-to-br from-[#10101C] via-[#0E0F1E] to-[#080810] border border-[#E8C88A]/35 shadow-2xl flex flex-col items-center justify-end p-5">
-          {/* Candle Flames */}
-          <div className="flex gap-6 mb-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col items-center">
-                {!isExtinguished ? (
-                  <div className="w-4 h-7 bg-gradient-to-t from-orange-500 via-amber-300 to-white rounded-full animate-flame blur-[1px] shadow-[0_0_15px_#FFAA00]" />
-                ) : (
-                  <div className="w-1.5 h-6 bg-slate-400/40 rounded-full animate-pulse" />
-                )}
-                <div className="w-2.5 h-8 bg-gradient-to-b from-[#F7F2EA] to-[#E8C88A] rounded-sm mt-0.5 border border-[#E8C88A]/50" />
-              </div>
-            ))}
+          {/* Single Candle Flame */}
+          <div className="flex flex-col items-center mb-3">
+            {!isExtinguished ? (
+              <div className="w-5 h-8 bg-gradient-to-t from-orange-500 via-amber-300 to-white rounded-full animate-flame blur-[1px] shadow-[0_0_20px_#FFAA00]" />
+            ) : (
+              <div className="w-1.5 h-7 bg-slate-400/40 rounded-full animate-pulse" />
+            )}
+            <div className="w-3 h-10 bg-gradient-to-b from-[#F7F2EA] to-[#E8C88A] rounded-sm mt-0.5 border border-[#E8C88A]/60 flex items-center justify-center">
+              <div className="w-full h-1 bg-[#E8C88A]" />
+            </div>
           </div>
 
-          {/* 3 Tiers */}
+          {/* 3 Tiers with "MURTAZA" */}
           <div className="w-28 h-10 rounded-t-lg bg-[#18153B] border-t-2 border-x-2 border-[#E8C88A] relative shadow-md">
             <div className="absolute -bottom-1 left-0 right-0 h-1 bg-[#E8C88A]" />
           </div>
-          <div className="w-44 h-12 rounded-t-lg bg-[#13112E] border-t-2 border-x-2 border-[#E8C88A] relative shadow-lg">
+          <div className="w-48 h-14 rounded-t-lg bg-[#13112E] border-t-2 border-x-2 border-[#E8C88A] relative shadow-lg flex items-center justify-center">
+            <span className="text-xs font-serif font-black tracking-widest text-[#E8C88A] drop-shadow-[0_0_8px_rgba(232,200,138,0.8)]">
+              ✦ MURTAZA ✦
+            </span>
             <div className="absolute -bottom-1 left-0 right-0 h-1.5 bg-[#E8C88A]" />
           </div>
-          <div className="w-60 h-16 rounded-b-xl bg-[#0B0F22] border-2 border-[#E8C88A] relative shadow-2xl">
+          <div className="w-64 h-16 rounded-b-xl bg-[#0B0F22] border-2 border-[#E8C88A] relative shadow-2xl">
             <div className="absolute bottom-2 left-0 right-0 flex justify-around px-4">
               {Array.from({ length: 9 }).map((_, idx) => (
                 <div key={idx} className="w-1.5 h-1.5 rounded-full bg-[#E8C88A]" />

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Sparkles, RotateCcw, Heart } from "lucide-react";
+import { Mail, Sparkles, RotateCcw, Heart, Copy, Check } from "lucide-react";
 import { soundManager } from "@/lib/sound";
 import { triggerWishSparkles } from "@/lib/confetti";
 import { birthdayData } from "@/data/birthday";
@@ -13,12 +13,22 @@ interface Chapter10FinalLetterProps {
 
 export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onReplay }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [hasCopied, setHasCopied] = useState<boolean>(false);
   const { finalLetter, recipient } = birthdayData;
 
   const handleOpenLetter = () => {
     setIsOpen(true);
     soundManager.playChime();
     triggerWishSparkles();
+  };
+
+  const handleCopyLetter = () => {
+    soundManager.playTap();
+    const fullText = `${finalLetter.paragraphs.join("\n\n")}\n\n${finalLetter.heroMessage}\n${finalLetter.recipientTitle}\n"${finalLetter.hopeMessage}"\n\n— ${finalLetter.signature}`;
+    navigator.clipboard.writeText(fullText).then(() => {
+      setHasCopied(true);
+      setTimeout(() => setHasCopied(false), 2500);
+    });
   };
 
   const handleRestart = () => {
@@ -131,14 +141,31 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({ onRe
                 {finalLetter.signature}
               </p>
 
-              {/* Replay The Magic Button */}
-              <div className="mt-8">
+              {/* Replay The Magic & Copy Buttons */}
+              <div className="mt-8 flex flex-col sm:flex-row items-center gap-3">
                 <button
                   onClick={handleRestart}
-                  className="px-6 py-3 rounded-full font-mono text-xs tracking-widest uppercase text-[#F7F2EA] glass-panel border border-white/20 hover:border-[#E8C88A] hover:text-[#E8C88A] shadow-lg active:scale-95 transition-all flex items-center gap-2.5"
+                  className="w-full sm:w-auto px-6 py-3 rounded-full font-mono text-xs tracking-widest uppercase text-[#F7F2EA] glass-panel border border-white/20 hover:border-[#E8C88A] hover:text-[#E8C88A] shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2.5"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>REPLAY THE MAGIC</span>
+                </button>
+
+                <button
+                  onClick={handleCopyLetter}
+                  className="w-full sm:w-auto px-5 py-3 rounded-full font-mono text-xs tracking-widest uppercase text-[#94A3B8] hover:text-white glass-pill border border-white/10 hover:border-[#67E8F9]/40 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  {hasCopied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">COPIED TO CLIPBOARD</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>SAVE KEEPSAKE</span>
+                    </>
+                  )}
                 </button>
               </div>
             </motion.div>

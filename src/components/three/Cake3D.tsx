@@ -10,29 +10,70 @@ interface Cake3DProps {
 
 export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const flameLightsRef = useRef<THREE.PointLight[]>([]);
+  const flameLightRef = useRef<THREE.PointLight>(null);
   const smokeParticlesRef = useRef<THREE.Points>(null);
   const starsRef = useRef<THREE.Group>(null);
 
-  // Generate smoke particles for when candles are blown
+  // Generate a high-resolution gold "MURTAZA" label texture
+  const murtazaTexture = useMemo(() => {
+    if (typeof document === "undefined") return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    // Background transparent
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Subtle metallic ribbon outline
+    ctx.strokeStyle = "rgba(232, 200, 138, 0.4)";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(40, 25, 944, 206);
+
+    // Gold typography
+    ctx.font = "bold 92px 'Playfair Display', Georgia, serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Glow
+    ctx.shadowColor = "#E8C88A";
+    ctx.shadowBlur = 25;
+
+    // Gold gradient text fill
+    const grad = ctx.createLinearGradient(100, 0, 924, 0);
+    grad.addColorStop(0, "#F7F2EA");
+    grad.addColorStop(0.3, "#E8C88A");
+    grad.addColorStop(0.7, "#FFE099");
+    grad.addColorStop(1, "#F7F2EA");
+    ctx.fillStyle = grad;
+
+    ctx.fillText("✦  MURTAZA  ✦", 512, 128);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
+
+  // Generate smoke particles for when the single candle is blown
   const smokeCount = 35;
   const smokePositions = useMemo(() => {
     const pos = new Float32Array(smokeCount * 3);
     for (let i = 0; i < smokeCount; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 0.4;
-      pos[i * 3 + 1] = 1.3 + Math.random() * 0.8;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 0.4;
+      pos[i * 3] = (Math.random() - 0.5) * 0.15;
+      pos[i * 3 + 1] = 1.9 + Math.random() * 0.6;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 0.15;
     }
     return pos;
   }, []);
 
   // Floating golden stardust around the cake
-  const stardustCount = 45;
+  const stardustCount = 40;
   const stardustPositions = useMemo(() => {
     const pos = new Float32Array(stardustCount * 3);
     for (let i = 0; i < stardustCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const radius = 1.4 + Math.random() * 1.2;
+      const radius = 1.4 + Math.random() * 1.1;
       pos[i * 3] = Math.cos(angle) * radius;
       pos[i * 3 + 1] = -0.5 + Math.random() * 2.2;
       pos[i * 3 + 2] = Math.sin(angle) * radius;
@@ -43,9 +84,9 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
   useFrame(({ clock }) => {
     const elapsed = clock.getElapsedTime();
 
-    // Subtle gentle auto-rotation
+    // Gentle auto-rotation
     if (groupRef.current) {
-      groupRef.current.rotation.y = elapsed * 0.2;
+      groupRef.current.rotation.y = elapsed * 0.22;
     }
 
     // Orbiting decorative stardust
@@ -53,30 +94,28 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
       starsRef.current.rotation.y = -elapsed * 0.15;
     }
 
-    // Flicker candle lights & animate flame shapes
+    // Single candle flame flicker & light intensity
     if (!isExtinguished) {
-      flameLightsRef.current.forEach((light, idx) => {
-        if (light) {
-          const noise =
-            Math.sin(elapsed * 10 + idx * 2) * 0.18 +
-            Math.cos(elapsed * 18 + idx) * 0.12 +
-            0.9;
-          light.intensity = 1.5 * noise;
-        }
-      });
+      if (flameLightRef.current) {
+        const noise =
+          Math.sin(elapsed * 12) * 0.2 +
+          Math.cos(elapsed * 17) * 0.15 +
+          0.9;
+        flameLightRef.current.intensity = 1.8 * noise;
+      }
     } else {
-      flameLightsRef.current.forEach((light) => {
-        if (light) light.intensity = 0;
-      });
+      if (flameLightRef.current) {
+        flameLightRef.current.intensity = 0;
+      }
 
-      // Animate smoke rising when extinguished
+      // Animate single candle smoke trail rising
       if (smokeParticlesRef.current) {
         const positions = smokeParticlesRef.current.geometry.attributes.position.array as Float32Array;
         for (let i = 0; i < smokeCount; i++) {
-          positions[i * 3 + 1] += 0.008; // Rise upward
-          positions[i * 3] += Math.sin(elapsed * 3 + i) * 0.002; // Drift left-right
-          if (positions[i * 3 + 1] > 2.6) {
-            positions[i * 3 + 1] = 1.3;
+          positions[i * 3 + 1] += 0.009; // Rise up
+          positions[i * 3] += Math.sin(elapsed * 3 + i) * 0.003; // Drift
+          if (positions[i * 3 + 1] > 2.8) {
+            positions[i * 3 + 1] = 1.9;
           }
         }
         smokeParticlesRef.current.geometry.attributes.position.needsUpdate = true;
@@ -84,44 +123,31 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
     }
   });
 
-  // Candle positions (3 tall elegant candles)
-  const candleConfigs = [
-    { pos: [0, 1.25, 0] as [number, number, number], height: 0.52 },
-    { pos: [-0.35, 1.22, 0.15] as [number, number, number], height: 0.46 },
-    { pos: [0.35, 1.22, -0.15] as [number, number, number], height: 0.46 },
-  ];
-
   return (
     <group ref={groupRef} position={[0, -0.7, 0]}>
       {/* ──────────────── CATERING PLATTER / GOLD PEDESTAL ──────────────── */}
-      {/* Heavy Platter Base */}
       <mesh position={[0, -0.85, 0]}>
         <cylinderGeometry args={[1.75, 2.0, 0.14, 64]} />
         <meshStandardMaterial
           color="#E8C88A"
           metalness={0.92}
           roughness={0.2}
-          envMapIntensity={1.2}
         />
       </mesh>
-      {/* Pedestal Stem */}
       <mesh position={[0, -0.72, 0]}>
         <cylinderGeometry args={[0.35, 0.55, 0.18, 36]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.88} roughness={0.25} />
       </mesh>
-      {/* Platter Top Mirror Surface */}
       <mesh position={[0, -0.6, 0]}>
         <cylinderGeometry args={[1.9, 1.9, 0.08, 64]} />
         <meshStandardMaterial color="#0A0B14" metalness={0.8} roughness={0.15} />
       </mesh>
-      {/* Platter Beaded Outer Rim */}
       <mesh position={[0, -0.56, 0]}>
         <torusGeometry args={[1.9, 0.04, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.15} />
       </mesh>
 
       {/* ──────────────── TIER 1 (BOTTOM TIER) ──────────────── */}
-      {/* Deep Royal Midnight Blue Velvet Body */}
       <mesh position={[0, -0.2, 0]}>
         <cylinderGeometry args={[1.5, 1.5, 0.72, 64]} />
         <meshStandardMaterial
@@ -130,12 +156,10 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
           metalness={0.2}
         />
       </mesh>
-      {/* Bottom Tier Gold Base Rim */}
       <mesh position={[0, -0.55, 0]}>
         <torusGeometry args={[1.51, 0.045, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.18} />
       </mesh>
-      {/* Bottom Tier Gold Top Rim */}
       <mesh position={[0, 0.16, 0]}>
         <torusGeometry args={[1.51, 0.045, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.18} />
@@ -154,8 +178,7 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
         );
       })}
 
-      {/* ──────────────── TIER 2 (MIDDLE TIER) ──────────────── */}
-      {/* Midnight Indigo-Violet Tier Body */}
+      {/* ──────────────── TIER 2 (MIDDLE TIER) WITH "MURTAZA" ──────────────── */}
       <mesh position={[0, 0.5, 0]}>
         <cylinderGeometry args={[1.05, 1.05, 0.65, 64]} />
         <meshStandardMaterial
@@ -164,16 +187,47 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
           metalness={0.25}
         />
       </mesh>
-      {/* Middle Tier Gold Base Rim */}
       <mesh position={[0, 0.18, 0]}>
         <torusGeometry args={[1.06, 0.04, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.18} />
       </mesh>
-      {/* Middle Tier Gold Top Rim */}
       <mesh position={[0, 0.82, 0]}>
         <torusGeometry args={[1.06, 0.04, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.18} />
       </mesh>
+
+      {/* ✦ EMBOSSED GOLD "MURTAZA" NAME PLAQUE ON THE FRONT OF TIER 2 ✦ */}
+      {murtazaTexture && (
+        <mesh position={[0, 0.5, 0]}>
+          <cylinderGeometry
+            args={[1.062, 1.062, 0.35, 64, 1, true, -Math.PI / 3, (2 * Math.PI) / 3]}
+          />
+          <meshStandardMaterial
+            map={murtazaTexture}
+            transparent
+            metalness={0.85}
+            roughness={0.2}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
+
+      {/* Back side "MURTAZA" so it's visible as the cake rotates */}
+      {murtazaTexture && (
+        <mesh position={[0, 0.5, 0]} rotation={[0, Math.PI, 0]}>
+          <cylinderGeometry
+            args={[1.062, 1.062, 0.35, 64, 1, true, -Math.PI / 3, (2 * Math.PI) / 3]}
+          />
+          <meshStandardMaterial
+            map={murtazaTexture}
+            transparent
+            metalness={0.85}
+            roughness={0.2}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
+
       {/* Champagne Gold Drip Glaze Layer on Tier 2 */}
       <mesh position={[0, 0.83, 0]}>
         <cylinderGeometry args={[1.07, 1.07, 0.035, 64]} />
@@ -182,7 +236,7 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
       {/* Hanging Gold Drip Droplets */}
       {Array.from({ length: 8 }).map((_, i) => {
         const angle = (i / 8) * Math.PI * 2;
-        const dripLength = 0.14 + (i % 3) * 0.08;
+        const dripLength = 0.12 + (i % 3) * 0.06;
         return (
           <group
             key={`drip-${i}`}
@@ -201,7 +255,6 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
       })}
 
       {/* ──────────────── TIER 3 (TOP TIER) ──────────────── */}
-      {/* Deep Obsidian Royal Navy Tier Body */}
       <mesh position={[0, 1.08, 0]}>
         <cylinderGeometry args={[0.68, 0.68, 0.5, 64]} />
         <meshStandardMaterial
@@ -210,99 +263,79 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
           metalness={0.3}
         />
       </mesh>
-      {/* Top Tier Gold Base Rim */}
       <mesh position={[0, 0.84, 0]}>
         <torusGeometry args={[0.69, 0.035, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.18} />
       </mesh>
-      {/* Top Tier Gold Crown Rim */}
       <mesh position={[0, 1.33, 0]}>
         <torusGeometry args={[0.69, 0.035, 16, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.18} />
       </mesh>
-      {/* Top Frosting Glaze Disc */}
       <mesh position={[0, 1.335, 0]}>
         <cylinderGeometry args={[0.7, 0.7, 0.03, 64]} />
         <meshStandardMaterial color="#E8C88A" metalness={0.88} roughness={0.22} />
       </mesh>
 
-      {/* ──────────────── LUXURY GOLD MONOGRAM TOPPER ──────────────── */}
-      {/* Elevated Gold Crown / Star Emblem for Murtaza */}
-      <group position={[0, 1.55, 0]}>
-        {/* Slender golden pillar */}
-        <mesh position={[0, -0.1, 0]}>
-          <cylinderGeometry args={[0.015, 0.015, 0.22, 12]} />
+      {/* ──────────────── EXACTLY ONE MAJESTIC BIRTHDAY CANDLE ──────────────── */}
+      <group position={[0, 1.35, 0]}>
+        {/* Candle Golden Base Socket */}
+        <mesh position={[0, 0.02, 0]}>
+          <cylinderGeometry args={[0.07, 0.09, 0.04, 24]} />
           <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.15} />
         </mesh>
-        {/* Golden Diamond Star */}
-        <mesh rotation={[0, 0, Math.PI / 4]}>
-          <boxGeometry args={[0.18, 0.18, 0.03]} />
-          <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.12} />
+
+        {/* Tall Elegant Candle Body (Champagne Ivory with gold fluting) */}
+        <mesh position={[0, 0.28, 0]}>
+          <cylinderGeometry args={[0.05, 0.05, 0.54, 32]} />
+          <meshStandardMaterial
+            color="#F7F2EA"
+            metalness={0.35}
+            roughness={0.25}
+          />
         </mesh>
-        <mesh rotation={[0, 0, 0]}>
-          <boxGeometry args={[0.14, 0.14, 0.035]} />
-          <meshStandardMaterial color="#FFFFFF" metalness={0.2} roughness={0.1} />
+
+        {/* Spiral Gold Bands around the single candle */}
+        <mesh position={[0, 0.18, 0]}>
+          <torusGeometry args={[0.052, 0.009, 12, 32]} />
+          <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.15} />
         </mesh>
-        <pointLight color="#E8C88A" intensity={0.4} distance={1.2} />
+        <mesh position={[0, 0.38, 0]}>
+          <torusGeometry args={[0.052, 0.009, 12, 32]} />
+          <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.15} />
+        </mesh>
+
+        {/* Candle Black Wick */}
+        <mesh position={[0, 0.57, 0]}>
+          <cylinderGeometry args={[0.009, 0.009, 0.07, 12]} />
+          <meshStandardMaterial color="#111111" />
+        </mesh>
+
+        {/* Candle Flame (Dual-layer realistic fire) */}
+        {!isExtinguished ? (
+          <group position={[0, 0.67, 0]}>
+            {/* Outer Warm Golden-Amber Flame */}
+            <mesh>
+              <coneGeometry args={[0.065, 0.19, 24]} />
+              <meshBasicMaterial color="#FF9E00" transparent opacity={0.88} />
+            </mesh>
+            {/* Inner White-Hot Core */}
+            <mesh position={[0, -0.025, 0]}>
+              <coneGeometry args={[0.035, 0.12, 20]} />
+              <meshBasicMaterial color="#FFFBEA" />
+            </mesh>
+            {/* Dynamic Candle Light with Warm Glow */}
+            <pointLight
+              ref={flameLightRef}
+              color="#FFA500"
+              intensity={2.0}
+              distance={4.0}
+              decay={2}
+            />
+          </group>
+        ) : null}
       </group>
 
-      {/* ──────────────── 3 ARTISANAL CANDLES ──────────────── */}
-      {candleConfigs.map((cfg, idx) => (
-        <group key={`candle-${idx}`} position={cfg.pos}>
-          {/* Candle Body: Champagne Gold / Ivory Ribbed Fluting */}
-          <mesh position={[0, cfg.height / 2, 0]}>
-            <cylinderGeometry args={[0.045, 0.045, cfg.height, 24]} />
-            <meshStandardMaterial
-              color="#F7F2EA"
-              metalness={0.4}
-              roughness={0.3}
-            />
-          </mesh>
-          {/* Candle Spiral Gold Band */}
-          <mesh position={[0, cfg.height * 0.45, 0]}>
-            <torusGeometry args={[0.047, 0.008, 12, 24]} />
-            <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.15} />
-          </mesh>
-          <mesh position={[0, cfg.height * 0.75, 0]}>
-            <torusGeometry args={[0.047, 0.008, 12, 24]} />
-            <meshStandardMaterial color="#E8C88A" metalness={0.95} roughness={0.15} />
-          </mesh>
-
-          {/* Candle Wick */}
-          <mesh position={[0, cfg.height + 0.03, 0]}>
-            <cylinderGeometry args={[0.008, 0.008, 0.06, 12]} />
-            <meshStandardMaterial color="#111111" />
-          </mesh>
-
-          {/* Candle Flame (Dual-layer realistic fire) */}
-          {!isExtinguished ? (
-            <group position={[0, cfg.height + 0.12, 0]}>
-              {/* Outer Warm Golden-Amber Flame */}
-              <mesh>
-                <coneGeometry args={[0.05, 0.16, 20]} />
-                <meshBasicMaterial color="#FF9E00" transparent opacity={0.88} />
-              </mesh>
-              {/* Inner White-Hot Core */}
-              <mesh position={[0, -0.02, 0]}>
-                <coneGeometry args={[0.028, 0.1, 16]} />
-                <meshBasicMaterial color="#FFFBEA" />
-              </mesh>
-              {/* Dynamic Candle Point Light with Warm Radius */}
-              <pointLight
-                ref={(el) => {
-                  if (el) flameLightsRef.current[idx] = el;
-                }}
-                color="#FFA500"
-                intensity={1.6}
-                distance={3.5}
-                decay={2}
-              />
-            </group>
-          ) : null}
-        </group>
-      ))}
-
-      {/* ──────────────── RISING SMOKE TRAILS (AFTER BLOWING) ──────────────── */}
+      {/* ──────────────── RISING SMOKE PARTICLES (WHEN EXTINGUISHED) ──────────────── */}
       {isExtinguished && (
         <points ref={smokeParticlesRef}>
           <bufferGeometry>
@@ -312,10 +345,10 @@ export const Cake3D: React.FC<Cake3DProps> = ({ isExtinguished }) => {
             />
           </bufferGeometry>
           <pointsMaterial
-            size={0.06}
+            size={0.065}
             color="#D1D5DB"
             transparent
-            opacity={0.35}
+            opacity={0.4}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
           />

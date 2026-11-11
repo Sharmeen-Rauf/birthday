@@ -43,10 +43,10 @@ export const Chapter07GamingSetup: React.FC<Chapter07GamingSetupProps> = ({
   };
 
   const handleHotspotClick = (spot: GamingHotspot) => {
-    soundManager.playTap();
     setActiveItem(spot);
 
     if (spot.id === "pc") {
+      soundManager.playFanBoost();
       setFansBoosting(true);
       setTimeout(() => setFansBoosting(false), 3000);
     } else if (spot.id === "monitor") {
@@ -59,12 +59,17 @@ export const Chapter07GamingSetup: React.FC<Chapter07GamingSetupProps> = ({
         subtitle: "Birthday Boy: Max stats in ambition, gaming reflexes, and late-night coding.",
       });
     } else if (spot.id === "keyboard") {
+      soundManager.playKeyboardClick();
       setKeyboardMode((prev) => (prev + 1) % 4);
     } else if (spot.id === "projector") {
+      soundManager.playChime();
       setProjectorActive((prev) => !prev);
     } else if (spot.id === "coffee") {
+      soundManager.playTap();
       setCoffeeSteaming(true);
       setTimeout(() => setCoffeeSteaming(false), 3500);
+    } else {
+      soundManager.playTap();
     }
   };
 
