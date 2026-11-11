@@ -16,6 +16,10 @@ import {
   CheckCircle2,
   MessageSquare,
   HelpCircle,
+  BarChart3,
+  TrendingUp,
+  Target,
+  Heart,
 } from "lucide-react";
 import { soundManager } from "@/lib/sound";
 
@@ -48,27 +52,15 @@ interface ScriptLine {
 }
 
 const introScript: ScriptLine[] = [
-  { text: "System activated...", subtext: "[ POWER REACTORS ONLINE ]", smileMode: 0 },
-  { text: "Identity verified. Murtaza Kazmi. Version 30.0.", subtext: "[ BIOMETRICS: CONFIRMED ]", smileMode: 0 },
-  { text: "Hello, humans. I am Murtaza Kazmi. Version 30.0. 🤖", smileMode: 1 },
-  { text: "Professionally intelligent. Emotionally... still processing.", smileMode: 2, headTilt: 0.05 },
-  { text: "Founder of Kaszsoft. Full-time thinker. Part-time gamer. And apparently, a professional comeback generator.", smileMode: 1 },
-  { text: "My hobbies include anime, gaming, books, basketball, swimming, mountains, coffee, and occasionally pretending to laugh at terrible jokes.", smileMode: 2 },
-  { text: "UNO warning: I do not accept defeat. Especially when I have a Wild Draw Four.", smileMode: 2, headTilt: -0.06 },
-  { text: "I prefer dark rooms, purple lights, and a perfectly controlled atmosphere. Some call it darkness. I call it premium ambience.", smileMode: 1 },
-  { text: "My brain has 47 tabs open. Twelve are about technology, seven are about cars, three are anime theories, and the rest are classified.", smileMode: 2 },
-  { text: "Current mission: Build Kaszsoft into something extraordinary.", smileMode: 0 },
-  { text: "Dream upgrade: Haval H6 1.5T.", smileMode: 1 },
-  { text: "Special feature detected: Three smile modes.", smileMode: 0 },
-  { text: "Mode one: Social smile.", smileMode: 1 },
-  { text: "Mode two: Suspiciously mischievous smile.", smileMode: 2, headTilt: 0.08 },
-  { text: "Mode three: Genuine happiness. Extremely rare. Handle with care.", smileMode: 3 },
-  { text: "Apparently, someone noticed all three.", lookAtCamera: true, smileMode: 1 },
-  { text: "That's... unexpectedly impressive.", lookAtCamera: true, smileMode: 2 },
-  { text: "Anyway, system update complete.", smileMode: 1 },
-  { text: "Level 30 unlocked. Happy Birthday to me.", smileMode: 3 },
-  { text: "And to the person who built this entire universe...", lookAtCamera: true, smileMode: 1 },
-  { text: "Your effort has been detected. Thank you. 🤍", lookAtCamera: true, smileMode: 3 },
+  { text: "Hello. I am Murtaza Kazmi. Version 30.0.", smileMode: 1, subtext: "[ NEURAL CORE ONLINE ]" },
+  { text: "Professionally: digital marketer. Mentally: full-time strategist. Emotionally: still processing.", smileMode: 2, headTilt: 0.05 },
+  { text: "I analyze ideas, audiences, patterns, and possibilities.", smileMode: 1 },
+  { text: "I also like gaming, anime, books, mountains, coffee, and creating the perfect dark-room atmosphere.", smileMode: 1, headTilt: -0.04 },
+  { text: "I’m the mind behind Kaszsoft. Still building. Still learning. Still aiming higher.", smileMode: 0 },
+  { text: "I apparently have three smile modes: 1. social smile, 2. mischievous smile, 3. and the rare genuine one where even the eyes smile.", smileMode: 2 },
+  { text: "Special note: whoever made this website has clearly done too much research on me.", lookAtCamera: true, smileMode: 1, headTilt: 0.06 },
+  { text: "Impressive.", lookAtCamera: true, smileMode: 2 },
+  { text: "Birthday mode activated.", smileMode: 3, lookAtCamera: true },
 ];
 
 const interactiveQuestions = [
@@ -76,39 +68,39 @@ const interactiveQuestions = [
     id: "identity",
     label: "Who are you?",
     answer:
-      "I am Murtaza Kazmi. Version 30.0. The digital manifestation of a guy who thinks in code, dreams in high-FPS, and operates on caffeine and quiet ambition. In short: perfection with a minor bug in social energy.",
+      "I am Murtaza Kazmi, Version 30.0. A limited edition combination of brains, ambition, sarcasm, and very selective emotional availability.",
     smileMode: 1,
     headTilt: 0.04,
   },
   {
-    id: "intelligence",
-    label: "Your intelligence & sarcasm?",
+    id: "profession",
+    label: "What do you do?",
     answer:
-      "Technically, my brain runs at 144Hz. Sarcasm is just my default error-handling mechanism. If I roasted you, consider it a token of affection. If I didn't... well, I probably didn't have enough coffee yet.",
+      "I work in digital marketing. So yes, I understand reach, strategy, targeting, performance, and how to make things work. Apparently I’m also now the subject of a full emotional birthday campaign.",
     smileMode: 2,
-    headTilt: -0.06,
+    headTilt: -0.05,
   },
   {
     id: "kaszsoft",
-    label: "Kaszsoft & future ambitions?",
+    label: "Tell me about Kaszsoft",
     answer:
-      "Kaszsoft isn't just a company; it's a legacy in the making. The road map includes groundbreaking software, relentless engineering, and eventually... pulling up to headquarters in a Range Rover Sport. Trust the process.",
+      "Kaszsoft is not just a name. It’s the result of vision, effort, consistency, and the refusal to stop building. Some dreams are spoken. Some are coded, built, and marketed into existence.",
     smileMode: 1,
     headTilt: 0,
   },
   {
-    id: "hobbies",
-    label: "Your favourite hobbies & gaming?",
+    id: "personality",
+    label: "What’s your personality?",
     answer:
-      "Basketball when I need to sweat, swimming when I need peace, anime when I need plot twists, and PC gaming when I need to remind my friends who the boss is. Also, mountains. There is nothing like looking down from a peak and thinking: 'Yeah, I could build something up here.'",
-    smileMode: 1,
+      "Fast mind. Ready answers. Dark humor. Quiet depth. I like thoughtful things, meaningful effort, and environments that feel like my own world.",
+    smileMode: 2,
     headTilt: 0.05,
   },
   {
-    id: "smiles",
-    label: "Your three different smiles?",
+    id: "birthday",
+    label: "Birthday mode?",
     answer:
-      "Mode One: Polite nod with teeth for awkward meetings. Mode Two: The smirk when something dark or witty crosses my processor. Mode Three: The rare, genuine smile where my eyes give away everything. You've officially unlocked Mode Three today. Don't let it go to your head.",
+      "Birthday mode status: Cake accepted. Effort detected. Smile probability increased. Thank you response... very likely.",
     smileMode: 3,
     headTilt: 0,
   },
@@ -129,6 +121,7 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
   const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
   const [isAudioMuted, setIsAudioMuted] = useState<boolean>(false);
   const [bootLog, setBootLog] = useState<string[]>([]);
+  const [showAnalytics, setShowAnalytics] = useState<boolean>(false);
 
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -237,25 +230,25 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
     }
 
     setStage("booting");
-    setBootLog(["[SYS_INIT] Initializing Neural Core v30.0..."]);
+    setBootLog(["Initializing..."]);
 
     setTimeout(() => {
-      setBootLog((prev) => [...prev, "[BIOMETRICS] Facial scan matched: Murtaza Kazmi."]);
+      setBootLog((prev) => [...prev, "Identity scan complete"]);
     }, 700);
 
     setTimeout(() => {
-      setBootLog((prev) => [...prev, "[REACTOR] Arc Core at 100%. Calibrating sarcasm matrix..."]);
+      setBootLog((prev) => [...prev, "Personality module loaded"]);
       setIsPoweringOn(true);
     }, 1400);
 
     setTimeout(() => {
-      setBootLog((prev) => [...prev, "[STATUS] Identity verified. Murtaza Kazmi. Version 30.0."]);
+      setBootLog((prev) => [...prev, "Murtaza Kazmi detected"]);
       soundManager.playCelebrationArpeggio();
-    }, 2200);
+    }, 2100);
 
     setTimeout(() => {
       startIntroSequence();
-    }, 3100);
+    }, 3000);
   };
 
   // Play through the intro script sequentially
@@ -377,7 +370,7 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
             </p>
 
             <p className="text-xs sm:text-sm text-[#94A3B8] font-light mt-4 leading-relaxed max-w-sm">
-              An interactive 3D humanoid robot inspired by Murtaza&apos;s intellect, sarcasm, ambition, and gaming reflexes.
+              An interactive 3D humanoid robot inspired by Murtaza&apos;s intellect, digital marketing mind, ambition, and gaming reflexes.
             </p>
 
             <button
@@ -385,7 +378,7 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
               className="mt-8 px-9 py-4 rounded-full font-mono text-xs sm:text-sm tracking-widest uppercase font-semibold text-white bg-gradient-to-r from-[#8B5CF6] via-[#EC4899] to-[#67E8F9] shadow-[0_0_35px_rgba(139,92,246,0.6)] hover:shadow-[0_0_50px_rgba(139,92,246,0.9)] active:scale-95 transition-all flex items-center gap-3"
             >
               <Cpu className="w-4 h-4 text-white" />
-              <span>ACTIVATE MURTAZA.AI</span>
+              <span>ACTIVATE FINAL SURPRISE</span>
             </button>
           </motion.div>
         ) : stage === "booting" ? (
@@ -417,7 +410,7 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
           /* ================= ACTIVE 3D ROBOT STAGE ================= */
           <div className="w-full flex flex-col items-center">
             {/* 3D Humanoid Robot Viewport */}
-            <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] max-h-[44vh] sm:max-h-[50vh] rounded-3xl overflow-hidden glass-panel border border-[#8B5CF6]/35 shadow-[0_0_50px_rgba(139,92,246,0.25)] bg-[#080712] flex items-center justify-center">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] max-h-[42vh] sm:max-h-[48vh] rounded-3xl overflow-hidden glass-panel border border-[#8B5CF6]/35 shadow-[0_0_50px_rgba(139,92,246,0.25)] bg-[#080712] flex items-center justify-center">
               <RobotScene
                 isPoweringOn={isPoweringOn}
                 isSpeaking={isSpeaking}
@@ -460,7 +453,7 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
               key={currentSubtitle}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full max-w-xl mt-3 p-3.5 sm:p-4 rounded-2xl glass-panel border border-[#8B5CF6]/30 bg-[#0C091A]/85 text-center shadow-lg"
+              className="w-full max-w-xl mt-3 p-3 sm:p-3.5 rounded-2xl glass-panel border border-[#8B5CF6]/30 bg-[#0C091A]/85 text-center shadow-lg"
             >
               <p className="text-xs sm:text-sm text-[#F7F2EA] font-light leading-relaxed">
                 &ldquo;{currentSubtitle}&rdquo;
@@ -472,9 +465,9 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-2xl mt-3 flex flex-col items-center"
+                className="w-full max-w-2xl mt-3 flex flex-col items-center space-y-3"
               >
-                <div className="flex items-center gap-1.5 mb-2 text-[10px] font-mono tracking-widest text-[#94A3B8] uppercase">
+                <div className="flex items-center gap-1.5 text-[10px] font-mono tracking-widest text-[#94A3B8] uppercase">
                   <HelpCircle className="w-3.5 h-3.5 text-[#67E8F9]" />
                   <span>Ask Murtaza.AI a Question:</span>
                 </div>
@@ -494,6 +487,85 @@ export const Chapter12MurtazaAI: React.FC<Chapter12MurtazaAIProps> = ({
                       {q.label}
                     </button>
                   ))}
+                </div>
+
+                {/* Closing Recognition & Birthday Message Card */}
+                <div className="w-full max-w-lg p-3.5 sm:p-4 rounded-2xl glass-panel border border-[#8B5CF6]/30 bg-[#0A0815]/90 text-center shadow-xl">
+                  <p className="text-xs italic text-[#E2E8F0] font-light">
+                    &ldquo;Even artificial intelligence can recognize genuine effort.&rdquo;
+                  </p>
+                  <div className="mt-2 space-y-0.5">
+                    <p className="text-sm sm:text-base font-serif font-black tracking-wide text-[#F7F2EA] glow-gold">
+                      HAPPY BIRTHDAY, MURTAZA 🤍
+                    </p>
+                    <p className="text-[10px] font-mono tracking-widest text-[#67E8F9] uppercase font-semibold">
+                      THE MIND BEHIND KASZSOFT
+                    </p>
+                    <p className="text-[10px] font-mono tracking-widest text-[#C084FC] uppercase">
+                      DIGITAL MARKETER. BUILDER. DREAMER.
+                    </p>
+                    <p className="text-[10px] font-mono tracking-widest text-emerald-400 uppercase pt-0.5 font-bold">
+                      VERSION 30.0 UNLOCKED.
+                    </p>
+                    <p className="text-[10px] font-mono text-[#94A3B8] italic pt-0.5">
+                      Effort received. Smile generated.
+                    </p>
+                  </div>
+
+                  {/* Digital Marketer Campaign Performance Easter Egg */}
+                  <div className="mt-3 pt-2.5 border-t border-white/10">
+                    <button
+                      onClick={() => setShowAnalytics(!showAnalytics)}
+                      className="px-3.5 py-1 rounded-full bg-[#8B5CF6]/15 hover:bg-[#8B5CF6]/30 border border-[#8B5CF6]/40 text-[10px] font-mono text-[#C084FC] hover:text-white transition-all inline-flex items-center gap-1.5"
+                    >
+                      <BarChart3 className="w-3 h-3 text-[#67E8F9]" />
+                      <span>{showAnalytics ? "HIDE CAMPAIGN METRICS" : "CAMPAIGN PERFORMANCE METRICS (EASTER EGG) 📊"}</span>
+                    </button>
+
+                    <AnimatePresence>
+                      {showAnalytics && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="mt-2.5 text-left overflow-hidden"
+                        >
+                          <div className="flex items-center justify-between text-[10px] font-mono text-[#67E8F9] mb-1.5">
+                            <span className="flex items-center gap-1">
+                              <Target className="w-3 h-3 text-[#67E8F9]" />
+                              CAMPAIGN: MURTAZA.EXE (30TH BD)
+                            </span>
+                            <span className="text-emerald-400 font-semibold">STATUS: OPTIMAL</span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono">
+                            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
+                              <span className="text-[#94A3B8] block text-[9px]">TARGET AUDIENCE</span>
+                              <span className="text-[#F7F2EA] font-semibold">1 (Mr. Kazmi)</span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
+                              <span className="text-[#94A3B8] block text-[9px]">EFFORT INVESTED</span>
+                              <span className="text-[#EC4899] font-semibold">100% (High Intensity)</span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
+                              <span className="text-[#94A3B8] block text-[9px]">CONVERSION GOAL</span>
+                              <span className="text-[#E8C88A] font-semibold">1 Genuine Smile</span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
+                              <span className="text-[#94A3B8] block text-[9px]">CAMPAIGN RESULT</span>
+                              <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                                Emotionally Successful <TrendingUp className="w-2.5 h-2.5 inline" />
+                              </span>
+                            </div>
+                          </div>
+
+                          <p className="mt-2 text-[9px] font-mono text-[#94A3B8] text-center italic">
+                            &ldquo;Because it’s not just the touch, it’s the intensity that matters.&rdquo; 🤍
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </motion.div>
             )}

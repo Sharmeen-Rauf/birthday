@@ -182,14 +182,14 @@ export const Chapter10FinalLetter: React.FC<Chapter10FinalLetterProps> = ({
                   )}
                 </button>
 
-                {/* Optional Bonus Chapter: ACTIVATE MURTAZA.AI */}
+                {/* Optional Bonus Chapter: Activate Final Surprise */}
                 {onActivateBonusRobot && (
                   <button
                     onClick={onActivateBonusRobot}
                     className="w-full sm:w-auto px-6 py-3 rounded-full font-mono text-xs tracking-widest uppercase font-semibold text-white bg-gradient-to-r from-[#8B5CF6] via-[#EC4899] to-[#67E8F9] shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:shadow-[0_0_45px_rgba(139,92,246,0.9)] active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
                     <Bot className="w-4 h-4 text-white animate-bounce" />
-                    <span>ACTIVATE MURTAZA.AI (V30.0) 🤖</span>
+                    <span>Activate Final Surprise</span>
                   </button>
                 )}
               </div>

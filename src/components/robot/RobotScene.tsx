@@ -447,11 +447,12 @@ export default function RobotScene({
       >
         <PerspectiveCamera makeDefault position={[0, 0.6, 3.4]} fov={42} />
 
-        {/* Lighting setup: Dark studio with violet rim & warm key accents */}
+        {/* Lighting setup: Dark studio with violet rim, warm key, and subtle neon red accents */}
         <ambientLight intensity={0.4} />
         <directionalLight position={[2, 3, 2]} intensity={1.2} color="#FFFFFF" />
         <directionalLight position={[-2, 1, 1]} intensity={0.9} color="#C084FC" />
         <directionalLight position={[0, -2, -1]} intensity={0.6} color="#8B5CF6" />
+        <directionalLight position={[2.5, -1, -2]} intensity={0.45} color="#F43F5E" />
 
         {/* Subtle floating motion */}
         <Float speed={1.8} rotationIntensity={0.18} floatIntensity={0.35}>
