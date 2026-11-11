@@ -74,7 +74,7 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
     }
   };
 
-  // 3-second auto-slider interval
+  // 5-second auto-slider interval
   useEffect(() => {
     if (!isAutoPlaying) {
       if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
@@ -84,7 +84,7 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
     autoPlayTimerRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % total);
       setProgressKey((prev) => prev + 1);
-    }, 3000);
+    }, 5000);
 
     return () => {
       if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
@@ -126,7 +126,7 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
             {isAutoPlaying ? (
               <>
                 <Pause className="w-3 h-3 text-[#67E8F9]" />
-                <span>3s Auto</span>
+                <span>5s Auto</span>
               </>
             ) : (
               <>
@@ -137,7 +137,7 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
           </button>
         </div>
 
-        {/* Image Card Container with Gesture Swipe */}
+        {/* Image Card Container with Gesture Swipe (Card size preserved, 0 crop) */}
         <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] max-h-[64vh] rounded-3xl overflow-hidden glass-panel border border-[#E8C88A]/30 shadow-[0_0_45px_rgba(232,200,138,0.2)] p-2 flex items-center justify-center group bg-[#0A0B14]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -154,16 +154,29 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
               onClick={handleImageTap}
-              className="relative w-full h-full rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing select-none"
+              className="relative w-full h-full rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing select-none flex items-center justify-center"
             >
+              {/* Subtle ambient image glow to fill empty margins elegantly */}
               <Image
                 src={currentItem.src}
-                alt={currentItem.title}
+                alt=""
                 fill
                 priority
                 unoptimized
-                className="object-contain sm:object-cover object-center rounded-2xl"
+                className="object-cover object-center blur-2xl opacity-35 scale-110 pointer-events-none"
               />
+
+              {/* Complete, fully visible uncropped photo */}
+              <div className="relative z-10 w-full h-full flex items-center justify-center p-1">
+                <Image
+                  src={currentItem.src}
+                  alt={currentItem.title}
+                  fill
+                  priority
+                  unoptimized
+                  className="object-contain object-center rounded-2xl drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+                />
+              </div>
             </motion.div>
           </AnimatePresence>
 
@@ -191,14 +204,14 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
             <ChevronRight className="w-5 h-5 text-[#F7F2EA]" />
           </button>
 
-          {/* 3s Auto-progress animation bar */}
+          {/* 5s Auto-progress animation bar */}
           {isAutoPlaying && (
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-20">
               <motion.div
                 key={progressKey}
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
-                transition={{ duration: 3, ease: "linear" }}
+                transition={{ duration: 5, ease: "linear" }}
                 className="h-full bg-gradient-to-r from-[#E8C88A] to-[#67E8F9]"
               />
             </div>
