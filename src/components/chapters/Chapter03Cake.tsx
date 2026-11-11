@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Wind, ArrowRight, Mic } from "lucide-react";
-import { CakeCanvas } from "../three/CakeCanvas";
+import { Sparkles, Wind, ArrowRight, Mic, Heart } from "lucide-react";
+import Image from "next/image";
 import { triggerWishSparkles } from "@/lib/confetti";
 import { soundManager } from "@/lib/sound";
 import { birthdayData } from "@/data/birthday";
@@ -29,7 +29,6 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
     try {
       if (!isListeningMic) {
         setIsListeningMic(true);
-        // Optional browser mic blowing detection
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           const audioCtx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
@@ -52,7 +51,6 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
             }
             const average = sum / bufferLength;
 
-            // If blowing volume detected
             if (average > 55) {
               handleBlowCandles();
               stream.getTracks().forEach((track) => track.stop());
@@ -63,7 +61,6 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
           };
           checkVolume();
         } else {
-          // Fallback simulation
           setTimeout(() => {
             handleBlowCandles();
             setIsListeningMic(false);
@@ -71,7 +68,6 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
         }
       }
     } catch {
-      // In case mic is denied, safely fall back to manual blow
       setIsListeningMic(false);
       handleBlowCandles();
     }
@@ -91,19 +87,19 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
       {/* Atmospheric Candle Radial Aura */}
       <motion.div
         animate={{
-          scale: isExtinguished ? [1, 1.4, 0.8] : [1, 1.05, 0.98, 1],
-          opacity: isExtinguished ? 0.1 : 0.35,
+          scale: isExtinguished ? [1, 1.3, 0.9] : [1, 1.08, 0.96, 1],
+          opacity: isExtinguished ? 0.15 : 0.45,
         }}
         transition={{
           repeat: isExtinguished ? 0 : Infinity,
-          duration: 3,
+          duration: 3.5,
           ease: "easeInOut",
         }}
-        className="absolute w-[360px] sm:w-[500px] h-[360px] sm:h-[500px] bg-gradient-to-tr from-[#FFA500]/20 via-[#E8C88A]/15 to-transparent rounded-full blur-[100px] pointer-events-none"
+        className="absolute w-[360px] sm:w-[540px] h-[360px] sm:h-[540px] bg-gradient-to-tr from-[#FFA500]/25 via-[#E8C88A]/20 to-transparent rounded-full blur-[110px] pointer-events-none"
       />
 
       {/* Top Heading */}
-      <div className="relative z-10 text-center max-w-lg mb-2">
+      <div className="relative z-10 text-center max-w-lg mb-3">
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -121,10 +117,58 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
         </motion.h2>
       </div>
 
-      {/* 3D Cake Canvas */}
-      <div className="relative z-10 w-full flex items-center justify-center">
-        <CakeCanvas isExtinguished={isExtinguished} />
-      </div>
+      {/* Luxury Cake GIF Showcase Card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.94 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-xs sm:max-w-md my-4 flex flex-col items-center"
+      >
+        <div className="relative w-full aspect-square sm:w-[380px] sm:h-[380px] rounded-3xl overflow-hidden glass-panel border border-[#E8C88A]/35 shadow-[0_0_50px_rgba(232,200,138,0.2)] p-3 flex flex-col items-center justify-between group">
+          {/* Subtle top banner */}
+          <div className="relative z-10 flex items-center justify-between w-full px-3 py-1">
+            <span className="text-[10px] font-mono tracking-widest text-[#E8C88A] uppercase">
+              BIRTHDAY CELEBRATION
+            </span>
+            <span className="w-2 h-2 rounded-full bg-[#E8C88A] animate-pulse" />
+          </div>
+
+          {/* Actual Cake Animated GIF */}
+          <div className="relative w-full flex-1 rounded-2xl overflow-hidden flex items-center justify-center bg-black/40">
+            <Image
+              src="/videos/cake.gif"
+              alt="Birthday Cake for Murtaza"
+              fill
+              unoptimized
+              priority
+              className="object-contain p-2"
+            />
+
+            {/* Extinguished celebratory overlay */}
+            {isExtinguished && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center pb-4"
+              >
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8C88A]/20 backdrop-blur-md border border-[#E8C88A]/50 text-xs font-serif text-[#E8C88A]">
+                  <Sparkles className="w-3.5 h-3.5 text-[#E8C88A]" />
+                  <span>Wish Released to the Universe ✨</span>
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Bottom Gold Name Plate: MURTAZA */}
+          <div className="relative z-10 w-full pt-2 flex items-center justify-center">
+            <div className="px-5 py-1.5 rounded-full bg-gradient-to-r from-[#E8C88A]/20 via-[#E8C88A]/30 to-[#E8C88A]/20 border border-[#E8C88A]/40 shadow-sm flex items-center gap-2">
+              <span className="text-xs sm:text-sm font-serif font-bold tracking-widest text-[#E8C88A] glow-gold">
+                ✦ MURTAZA ✦
+              </span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Action / Wish Reveal Area */}
       <div className="relative z-10 text-center max-w-md w-full mt-2 flex flex-col items-center">
@@ -192,4 +236,3 @@ export const Chapter03Cake: React.FC<Chapter03CakeProps> = ({ onContinue }) => {
     </div>
   );
 };
-

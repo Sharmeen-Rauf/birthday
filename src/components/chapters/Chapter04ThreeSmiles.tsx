@@ -101,11 +101,21 @@ export const Chapter04ThreeSmiles: React.FC<Chapter04ThreeSmilesProps> = ({ onCo
         <AnimatePresence mode="wait">
           <motion.div
             key={currentCard.id}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(e, { offset }) => {
+              if (offset.x < -45) {
+                handleNext();
+              } else if (offset.x > 45) {
+                handlePrev();
+              }
+            }}
             initial={{ opacity: 0, x: 25, scale: 0.96 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -25, scale: 0.96 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className={`relative rounded-3xl overflow-hidden glass-panel border transition-all duration-700 p-4 sm:p-6 shadow-2xl ${
+            className={`relative rounded-3xl overflow-hidden glass-panel border transition-all duration-700 p-4 sm:p-6 shadow-2xl cursor-grab active:cursor-grabbing select-none ${
               isThirdCard
                 ? "border-[#E8C88A]/50 shadow-[0_0_40px_rgba(232,200,138,0.25)] ring-1 ring-[#E8C88A]/30"
                 : "border-white/10"

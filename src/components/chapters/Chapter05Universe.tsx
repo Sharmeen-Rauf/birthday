@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Maximize2, X, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sparkles, Maximize2, X, ArrowRight, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 import { ImageWithFallback } from "../common/ImageWithFallback";
 import { soundManager } from "@/lib/sound";
 import { triggerUnoBurst } from "@/lib/confetti";
@@ -20,8 +20,23 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
   onTriggerEasterEgg,
 }) => {
   const [activeModalItem, setActiveModalItem] = useState<UniverseCategory | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { universe } = birthdayData;
+
+  const filters = [
+    { label: "All", count: 14 },
+    { label: "Mind & Wit", ids: ["uno", "books", "intelligence", "gaming"] },
+    { label: "Nature & Motion", ids: ["mountains", "nature", "basketball", "swimming", "subway-surfers"] },
+    { label: "Atmosphere & Soul", ids: ["colours", "anime", "touch", "coffee", "dark-universe"] },
+  ];
+
+  const filteredItems = useMemo(() => {
+    if (activeFilter === "All") return universe.items;
+    const current = filters.find((f) => f.label === activeFilter);
+    if (!current || !current.ids) return universe.items;
+    return universe.items.filter((item) => current.ids.includes(item.id));
+  }, [activeFilter, universe.items]);
 
   const handleCardClick = (item: UniverseCategory) => {
     soundManager.playTap();
@@ -46,13 +61,21 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
     }
   };
 
+  const handleFilterClick = (label: string) => {
+    soundManager.playTap();
+    setActiveFilter(label);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="relative min-h-[100dvh] w-full flex flex-col justify-between py-16 px-4 sm:px-8 overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#8B5CF6]/15 via-[#67E8F9]/10 to-transparent rounded-full blur-[120px] pointer-events-none" />
 
       {/* Header */}
-      <div className="relative z-10 text-center max-w-2xl mx-auto mb-6">
+      <div className="relative z-10 text-center max-w-2xl mx-auto mb-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono tracking-widest text-[#67E8F9] uppercase mb-2">
           <Sparkles className="w-3.5 h-3.5 text-[#67E8F9]" />
           <span>CHAPTER 05 // THE 14 ESSENTIALS</span>
@@ -65,10 +88,27 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
         </p>
       </div>
 
-      {/* Scroll Navigation Arrows on Desktop */}
+      {/* Category Filter Pills */}
+      <div className="relative z-10 flex items-center justify-center gap-2 flex-wrap max-w-xl mx-auto mb-3">
+        {filters.map((f) => (
+          <button
+            key={f.label}
+            onClick={() => handleFilterClick(f.label)}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 ${
+              activeFilter === f.label
+                ? "bg-[#67E8F9] text-black font-bold shadow-[0_0_15px_rgba(103,232,249,0.4)] scale-105"
+                : "glass-pill text-[#94A3B8] hover:text-white"
+            }`}
+          >
+            <span>{f.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Scroll Navigation Header & Arrows */}
       <div className="relative z-10 flex items-center justify-between w-full max-w-6xl mx-auto px-2 mb-2">
         <span className="text-xs font-mono text-[#94A3B8] tracking-widest uppercase">
-          Swipe or scroll horizontal →
+          Showing {filteredItems.length} of 14 items • Swipe horizontal →
         </span>
         <div className="hidden sm:flex items-center gap-2">
           <button
@@ -93,7 +133,7 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
         ref={scrollContainerRef}
         className="relative z-10 w-full overflow-x-auto no-scrollbar py-4 flex gap-4 sm:gap-6 snap-x snap-mandatory px-4 max-w-7xl mx-auto"
       >
-        {universe.items.map((item) => (
+        {filteredItems.map((item) => (
           <motion.div
             key={item.id}
             whileHover={{ y: -6, scale: 1.02 }}
@@ -245,4 +285,3 @@ export const Chapter05Universe: React.FC<Chapter05UniverseProps> = ({
     </div>
   );
 };
-
